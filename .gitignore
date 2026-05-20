@@ -1,0 +1,28 @@
+# Python environment and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+venv_linux/
+.env
+.venv/
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
+
+# Data and logs
+*.log
+*.csv
+*.xlsx
+*.pdf
+data/
+outputs/
+
+# Large binaries/files
+*.db
+*.sqlite3
