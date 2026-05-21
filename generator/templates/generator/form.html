@@ -1,856 +1,498 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road Athena - PPT Generator</title>
+    <title>Road Athena - Ultimate PPT Builder</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Modern Reset & Typography */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background: #f0f4f8; color: #2d3748; height: 100vh; overflow: hidden; }
 
-        body {
-            background: #f0f4f8;
-            color: #333;
-            padding: 40px 20px;
-        }
+        .app-workspace { display: flex; height: 100vh; width: 100vw; }
+        /* Update this in your CSS section */
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
+        /* ================= COLUMN 1 ================= */
+        .template-gallery { width: 300px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; flex-shrink: 0; }
+        .brand-header { padding: 20px; background: #0056b3; color: white; text-align: center; }
+        .brand-header h1 { font-size: 22px; font-weight: 700; }
+        .brand-header p { font-size: 12px; opacity: 0.8; margin-top: 3px; }
+        .gallery-scroll { flex-grow: 1; overflow-y: auto; padding: 15px 12px; }
+        .gallery-title { font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; padding-left: 5px; }
+        .gallery-item { width: 100%; padding: 12px 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; text-align: left; font-size: 13px; font-weight: 600; color: #4a5568; cursor: pointer; margin-bottom: 8px; transition: all 0.2s; }
+        .gallery-item:hover { background: #e6f0fa; color: #0056b3; border-color: #bee3f8; }
 
-        /* Main Header */
-        .page-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+        /* ================= COLUMN 2 ================= */
+        .workspace-center { flex-grow: 1; display: flex; flex-direction: column; background: #f7fafc; overflow-y: auto; border-right: 1px solid #e2e8f0; }
+        .workspace-header { padding: 20px 40px; background: white; border-bottom: 1px solid #e2e8f0; }
+        .workspace-header h2 { font-size: 18px; color: #1a202c; font-weight: 700; }
+        .workspace-body { 
+    padding: 30px 40px; 
+    max-width: 850px; 
+    margin: 0 auto; 
+    width: 100%; 
+    height: 100%;       /* Naya add kiya */
+    overflow-y: auto;    /* Naya add kiya */
+}
+        .workspace-center {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: #f7fafc;
+    overflow: hidden; /* Naya */
+}
 
-        .page-header h1 {
-            color: #0056b3;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+.workspace-body {
+    flex-grow: 1;
+    overflow-y: auto; /* Naya */
+    padding: 30px 40px;
+}
+        .slide-preview-box { background: #e2e8f0; width: 100%; height: 280px; border-radius: 10px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #cbd5e0; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .slide-preview-box img { width: 100%; height: 100%; object-fit: contain; background: #dce4ec; }
+        .preview-tag { position: absolute; top: 12px; left: 12px; background: rgba(0, 86, 179, 0.9); color: white; padding: 5px 10px; font-size: 11px; border-radius: 4px; font-weight: bold; }
 
-        .page-header p {
-            color: #666;
-            font-size: 16px;
-        }
+        .form-container { background: white; border-radius: 12px; padding: 25px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
+        input[type="text"], textarea { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px; color: #2d3748; background: #fafbfc; }
+        input[type="text"]:focus, textarea:focus { border-color: #0056b3; background: #fff; outline: none; box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1); }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .inner-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
+        
+        .add-to-deck-btn { width: 100%; padding: 14px; background: #0056b3; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .add-to-deck-btn:hover { background: #004494; }
 
-        /* Slide Cards */
-        .slide-card {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            overflow: hidden;
-            border: 1px solid #e1e8ed;
-        }
+        /* ================= COLUMN 3 ================= */
+        .deck-sidebar { width: 340px; background: #ffffff; display: flex; flex-direction: column; flex-shrink: 0; border-left: 1px solid #e2e8f0; }
+        .deck-header { padding: 20px; border-bottom: 1px solid #e2e8f0; background: #2d3748; color: white; }
+        .deck-header h3 { font-size: 16px; font-weight: 700; }
+        .deck-list { flex-grow: 1; overflow-y: auto; padding: 15px; background: #f8fafc; }
+        
+        .deck-item { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.02); animation: slideIn 0.2s ease; cursor: grab; }
+        .deck-item:active { cursor: grabbing; }
+        .deck-item.dragging { opacity: 0.4; background: #edf2f7; }
+        .deck-item.over { border: 2px dashed #0056b3; background: #e6f0fa; transform: scale(1.02); }
 
-        /* Card Header (Slide Name) */
-        .card-header {
-            background: #0056b3;
-            color: white;
-            padding: 15px 25px;
-            font-size: 18px;
-            font-weight: 600;
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+        
+        .deck-item-info { font-size: 13px; font-weight: 600; color: #2d3748; display: flex; align-items: center; max-width: 210px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .drag-handle { color: #a0aec0; margin-right: 10px; font-size: 16px; cursor: grab; }
 
-        .card-body {
-            padding: 25px;
-        }
+        .control-btn.delete { background: white; border: 1px solid #cbd5e0; padding: 4px 6px; border-radius: 4px; font-size: 11px; cursor: pointer; color: #4a5568; transition: 0.2s; }
+        .control-btn.delete:hover { background: #fed7d7; color: #c53030; border-color: #feb2b2; }
 
-        /* Sub-sections (Like Who We Are / Goals) */
-        .sub-section {
-            margin-bottom: 25px;
-        }
-
-        .sub-section h4 {
-            color: #444;
-            font-size: 16px;
-            margin-bottom: 12px;
-            border-bottom: 2px solid #f0f4f8;
-            padding-bottom: 5px;
-        }
-
-        /* Inputs */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 6px;
-        }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccd6dd;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background: #fafbfc;
-        }
-
-        input[type="text"]:focus,
-        textarea:focus {
-            border-color: #0056b3;
-            background: #fff;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
-        }
-
-        /* Grid Layouts */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .inner-box {
-            background: #f8faff;
-            border: 1px solid #dce4ec;
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        /* Buttons */
-        .add-btn {
-            background: #eef2f5;
-            color: #0056b3;
-            border: 1px solid #ccd6dd;
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-
-        .add-btn:hover {
-            background: #e2e8f0;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 16px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-        }
-
-        .submit-btn:hover {
-            background: #218838;
-            transform: translateY(-2px);
-        }
+        .deck-footer { padding: 20px; border-top: 1px solid #e2e8f0; background: #ffffff; }
+        .generate-btn { width: 100%; padding: 16px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2); transition: 0.2s; }
+        .generate-btn:hover { background: #218838; transform: translateY(-1px); }
+        
+        .slide-form-block { display: none; }
+        .slide-form-block.active { display: block; }
     </style>
 </head>
-
 <body>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>Road Athena PPT Engine</h1>
-            <p>Dynamic Presentation Content Builder</p>
-        </div>
-
-        <form method="POST" enctype="multipart/form-data">
+    <div class="app-workspace">
+        <form id="master-ppt-form" method="POST" enctype="multipart/form-data" style="display: contents;">
             {% csrf_token %}
+            <input type="hidden" name="slide_order_json" id="slide_order_json" value="[]">
 
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 2: About Us & Goals
-                </div>
-                <div class="card-body">
-                    <div class="sub-section">
-                        <h4>Who We Are</h4>
-                        <div id="who-container">
-                            <div class="form-group"><input type="text" name="who_1"
-                                    placeholder="Point 1 (Replaces [who_we_are_1])"></div>
-                            <div class="form-group"><input type="text" name="who_2"
-                                    placeholder="Point 2 (Replaces [who_we_are_2])"></div>
-                        </div>
-                        <button type="button" class="add-btn" onclick="addInput('who-container', 'who_')">+ Add More
-                            Point</button>
-                    </div>
-
-                    <div class="sub-section">
-                        <h4>Our Goals</h4>
-                        <div id="goal-container">
-                            <div class="form-group"><input type="text" name="goal_1"
-                                    placeholder="Goal 1 (Replaces [our_goals_1])"></div>
-                        </div>
-                        <button type="button" class="add-btn" onclick="addInput('goal-container', 'goal_')">+ Add More
-                            Goal</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 3: Problem Statements
-                </div>
-                <div class="card-body">
-
-                    <div class="inner-box form-group" style="margin-bottom: 15px;">
-                        <label>Point 1 (Required)</label>
-                        <input type="text" name="psh_1" placeholder="Heading (e.g., Traffic)"
-                            style="margin-bottom: 8px;">
-                        <input type="text" name="ds_1" placeholder="Description">
-                    </div>
-
-                    <div class="inner-box form-group" style="margin-bottom: 15px;">
-                        <label>Point 2 (Required)</label>
-                        <input type="text" name="psh_2" placeholder="Heading (e.g., Potholes)"
-                            style="margin-bottom: 8px;">
-                        <input type="text" name="ds_2" placeholder="Description">
-                    </div>
-
-                    <div class="inner-box form-group" style="margin-bottom: 15px;">
-                        <label>Point 3 (Optional)</label>
-                        <input type="text" name="psh_3" placeholder="Heading 3" style="margin-bottom: 8px;">
-                        <input type="text" name="ds_3" placeholder="Description 3">
-                    </div>
-
-                    <div class="inner-box form-group" style="margin-bottom: 15px;">
-                        <label>Point 4 (Optional)</label>
-                        <input type="text" name="psh_4" placeholder="Heading 4" style="margin-bottom: 8px;">
-                        <input type="text" name="ds_4" placeholder="Description 4">
-                    </div>
-                </div>
-            </div>
-
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 4: Complete ERP of Roads / USP
-                </div>
-                <div class="card-body">
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Main Slide Text (Edit to change):</label>
-                        <textarea name="erp_main"
-                            rows="3">Complete Digital ERP Solution for Road Infrastructure with real-time monitoring and asset management.</textarea>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="inner-box">
-                            <label>Image 1 (Optional):</label>
-                            <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Leave blank to keep original
-                                picture.</p>
-                            <input type="file" name="erp_img_1" accept="image/*"
-                                style="width: 100%; border: none; background: transparent; padding: 0;">
-                        </div>
-                        <div class="inner-box">
-                            <label>Image 2 (Optional):</label>
-                            <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Leave blank to keep original
-                                picture.</p>
-                            <input type="file" name="erp_img_2" accept="image/*"
-                                style="width: 100%; border: none; background: transparent; padding: 0;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 5: Our Solution
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label>Main Slide Heading</label>
-                        <input type="text" name="sol_main"
-                            value="Our devices can be mounted on any vehicle- 2-wheelers, 4-wheelers & more">
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="inner-box">
-                            <label>USP 1:</label>
-                            <input type="text" name="solh_1" value="Fast & Reliable" style="margin-bottom: 8px;">
-                            <textarea name="sold_1"
-                                rows="3">AI-powered data capture at survey speed with 99%+ uptime reliability</textarea>
-                        </div>
-
-                        <div class="inner-box">
-                            <label>USP 2:</label>
-                            <input type="text" name="solh_2" value="Cloud-Powered" style="margin-bottom: 8px;">
-                            <textarea name="sold_2"
-                                rows="3">All data stored securely on cloud — clients access anytime, anywhere</textarea>
-                        </div>
-
-                        <div class="inner-box">
-                            <label>USP 3:</label>
-                            <input type="text" name="solh_3" value="Scalable" style="margin-bottom: 8px;">
-                            <textarea name="sold_3"
-                                rows="3">From city roads to national highways — scales to any network size</textarea>
-                        </div>
-
-                        <div class="inner-box">
-                            <label>USP 4:</label>
-                            <input type="text" name="solh_4" value="Efficient" style="margin-bottom: 8px;">
-                            <textarea name="sold_4"
-                                rows="3">End-to-end automated AI models reduce manual effort by 80%+</textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 6: Solution Used by Clients
-                </div>
-                <div class="card-body">
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Main Slide Title:</label>
-                        <input type="text" name="sol_used_main" value="Solution Used by Clients">
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="inner-box">
-                            <label>Box 1:</label>
-                            <input type="text" name="suh_1" value="Road Asset & Defect Detection"
-                                style="margin-bottom: 8px;">
-                            <textarea name="sud_1"
-                                rows="2">AI detects 250+ classes of road defects and furniture</textarea>
-                        </div>
-                        <div class="inner-box">
-                            <label>Box 2:</label>
-                            <input type="text" name="suh_2" value="Stats & Dashboard" style="margin-bottom: 8px;">
-                            <textarea name="sud_2"
-                                rows="2">Real-time statistics and GIS-mapped road analytics</textarea>
-                        </div>
-                        <div class="inner-box">
-                            <label>Box 3:</label>
-                            <input type="text" name="suh_3" value="Pre & Post Analysis" style="margin-bottom: 8px;">
-                            <textarea name="sud_3"
-                                rows="2">Before/after comparisons for maintenance validation</textarea>
-                        </div>
-                        <div class="inner-box">
-                            <label>Box 4:</label>
-                            <input type="text" name="suh_4" value="Maintenance History" style="margin-bottom: 8px;">
-                            <textarea name="sud_4" rows="2">Complete maintenance audit trail and scheduling</textarea>
-                        </div>
-                        <div class="inner-box">
-                            <label>Box 5:</label>
-                            <input type="text" name="suh_5" value="Overlap Detection & Road Assetisation"
-                                style="margin-bottom: 8px;">
-                            <textarea name="sud_5" rows="2">Smart road segmentation and asset registration</textarea>
-                        </div>
-                        <div class="inner-box">
-                            <label>Box 6:</label>
-                            <input type="text" name="suh_6" value="Road Safety Analysis" style="margin-bottom: 8px;">
-                            <textarea name="sud_6" rows="2">Safety audits for highways, rural and urban roads</textarea>
-                        </div>
-                        <div class="inner-box">
-                            <label>Box 7:</label>
-                            <input type="text" name="suh_7" value="DLP Audits & Objective Rating"
-                                style="margin-bottom: 8px;">
-                            <textarea name="sud_7"
-                                rows="2">Objective road condition rating and defect liability audits</textarea>
-                        </div>
-                        <div class="inner-box">
-                            <label>Box 8:</label>
-                            <input type="text" name="suh_8" value="DPR Preparation" style="margin-bottom: 8px;">
-                            <textarea name="sud_8" rows="2">Automated Detailed Project Report generation</textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 7: Pre and Post Analysis
-                </div>
-                <div class="card-body">
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Main Slide Title:</label>
-                        <input type="text" name="pre_post_main" value="Pre and Post Analysis">
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="inner-box">
-                            <label>Image 1 (Pre - Top Left):</label>
-                            <input type="file" name="pre_post_img_1" accept="image/*" style="width: 100%;">
-                        </div>
-                        <div class="inner-box">
-                            <label>Image 2 (Post - Top Right):</label>
-                            <input type="file" name="pre_post_img_2" accept="image/*" style="width: 100%;">
-                        </div>
-                        <div class="inner-box" style="margin-top: 10px;">
-                            <label>Image 3 (Pre - Bottom Left):</label>
-                            <input type="file" name="pre_post_img_3" accept="image/*" style="width: 100%;">
-                        </div>
-                        <div class="inner-box" style="margin-top: 10px;">
-                            <label>Image 4 (Post - Bottom Right):</label>
-                            <input type="file" name="pre_post_img_4" accept="image/*" style="width: 100%;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 8: AI Capabilities & Detection
-                </div>
-                <div class="card-body">
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Main Slide Title:</label>
-                        <input type="text" name="ai_cap_main" value="AI Capabilities & Detection">
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="inner-box">
-                            <label>Image 1 (Left - Pavement):</label>
-                            <input type="file" name="ai_cap_img_1" accept="image/*"
-                                style="width: 100%; margin-bottom: 15px;">
-
-                            <label>Left Box Header:</label>
-                            <input type="text" name="ai_cap_h1" value="PAVEMENT DEFECTS" style="margin-bottom: 10px;">
-
-                            <label>Left Box Bullets (One per line):</label>
-                            <textarea name="ai_cap_b1"
-                                rows="6">Cracks&#10;Raveling&#10;Potholes&#10;Manholes&#10;Garbage</textarea>
-                        </div>
-
-                        <div class="inner-box">
-                            <label>Image 2 (Right - Furniture):</label>
-                            <input type="file" name="ai_cap_img_2" accept="image/*"
-                                style="width: 100%; margin-bottom: 15px;">
-
-                            <label>Right Box Header:</label>
-                            <input type="text" name="ai_cap_h2" value="ROAD FURNITURE" style="margin-bottom: 10px;">
-
-                            <label>Right Box Bullets (One per line):</label>
-                            <textarea name="ai_cap_b2"
-                                rows="6">Signage&#10;Lane Marking&#10;Poles&#10;Crash Barriers&#10;Solar Blinkers</textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 10: Demo Video
-                </div>
-                <div class="card-body">
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Main Slide Title:</label>
-                        <input type="text" name="demo_main" value="Demo Video">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Video Thumbnail (Image):</label>
-                        <input type="file" name="demo_img_1" accept="image/*" style="width: 100%;">
-                        <p style="font-size: 12px; color: #666; margin-top: 5px;">Upload a high-quality
-                            screenshot/thumbnail of the video.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 11: Heat maps & Statistics in Dashboard
-                </div>
-                <div class="card-body">
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Main Slide Title:</label>
-                        <input type="text" name="heat_map_main" value="Heat maps & Statistics in Dashboard">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Dashboard Screenshot (Full Image):</label>
-                        <input type="file" name="heat_map_img_1" accept="image/*" style="width: 100%;">
-                        <p style="font-size: 12px; color: #666; margin-top: 5px;">Upload a full-screen screenshot of the
-                            dashboard, heatmaps, or charts.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="slide-card">
-                <div class="card-header">
-                    Slide 12: Cloud-Powered Dashboard
-                </div>
-                <div class="card-body">
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Main Slide Title:</label>
-                        <input type="text" name="cloud_main" value="Cloud-Powered Dashboard: RoadAthena">
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Cloud Subtitle (Blue Bar):</label>
-                        <input type="text" name="cloud_sub"
-                            value="All data is on the Cloud — Clients can access anytime, anywhere, on any device">
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label>Dashboard Image:</label>
-                        <input type="file" name="cloud_img" accept="image/*" style="width: 100%;">
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 10px;">
-                        <label>Features Header:</label>
-                        <input type="text" name="cloud_feat_h" value="DASHBOARD FEATURES">
-                    </div>
-
-                    <label>Feature Blocks (Separate Boxes for Icon Safety):</label>
-                    <div class="two-column" style="margin-bottom: 20px; gap: 15px;">
-                        <input type="text" name="cloud_f1" value="GIS Mapped Roads & Route View">
-                        <input type="text" name="cloud_f2" value="Graphs, Heat Maps & Pie Charts">
-                        <input type="text" name="cloud_f3" value="Pavement & Furniture Analysis">
-                        <input type="text" name="cloud_f4" value="Asset & Anomaly Detection">
-                        <input type="text" name="cloud_f5" value="Pre & Post Survey Comparison">
-                        <input type="text" name="cloud_f6" value="Maintenance History & Scheduling">
-                        <input type="text" name="cloud_f7" value="Digital Twin & Road Inventorization">
-                    </div>
-
-                    <label>Footer Tagline (Separate words):</label>
-                    <div class="two-column" style="gap: 15px;">
-                        <input type="text" name="cf1" value="Fast">
-                        <input type="text" name="cf2" value="Secure">
-                        <input type="text" name="cf3" value="Cloud-Native">
-                        <input type="text" name="cf4" value="Mobile-Ready">
-                        <input type="text" name="cf5" value="Global Access">
-                    </div>
-                </div>
-            </div>
-    </div>
- 
-
-<div class="slide-card">
-            <div class="card-header">
-                Slide 14: HanuAI in Action (Stats)
-            </div>
-            <div class="card-body">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Main Title:</label>
-                    <input type="text" name="action_main" value="HanuAI in ACTION">
+            <div class="template-gallery">
+                <div class="brand-header">
+                    <h1>Road Athena</h1>
+                    <p>Dynamic Core Deck Customizer</p>
                 </div>
                 
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Subtitle (Italic):</label>
-                    <input type="text" name="action_sub" value="Proven at scale across India and 3 countries globally">
-                </div>
-
-                <label>Stat Blocks (Number & Description):</label>
-                <div class="two-column" style="margin-bottom: 20px; gap: 15px;">
-                    <div class="inner-box" style="padding: 10px; background: #f8f9fa; border: 1px solid #ddd;">
-                        <label>Box 1 Number:</label>
-                        <input type="text" name="stat_num_1" value="1,85,000+" style="font-weight: bold; margin-bottom: 10px;">
-                        <label>Box 1 Text:</label>
-                        <input type="text" name="stat_desc_1" value="Lane KMs Processed">
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #f8f9fa; border: 1px solid #ddd;">
-                        <label>Box 2 Number:</label>
-                        <input type="text" name="stat_num_2" value="250+" style="font-weight: bold; margin-bottom: 10px;">
-                        <label>Box 2 Text:</label>
-                        <input type="text" name="stat_desc_2" value="Unique Classes Detection">
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #f8f9fa; border: 1px solid #ddd;">
-                        <label>Box 3 Number:</label>
-                        <input type="text" name="stat_num_3" value="80,000+" style="font-weight: bold; margin-bottom: 10px;">
-                        <label>Box 3 Text:</label>
-                        <input type="text" name="stat_desc_3" value="Unique Roads Surveyed">
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #f8f9fa; border: 1px solid #ddd;">
-                        <label>Box 4 Number:</label>
-                        <input type="text" name="stat_num_4" value="1,000+ miles" style="font-weight: bold; margin-bottom: 10px;">
-                        <label>Box 4 Text:</label>
-                        <input type="text" name="stat_desc_4" value="Internationally">
+                <div style="padding: 15px; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                    <label style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase;">Master Brand Theme</label>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
+                        <input type="color" name="theme_color" value="#0056b3" style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer;">
+                        <span style="font-size: 12px; color: #4a5568; font-weight: 600;">Choose Accent Color</span>
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-top: 10px;">
-                    <label>Demo Video Link (Footer):</label>
-                    <input type="text" name="action_link" value="https://drive.google.com/file/d/1F32_B3jV4k9-tvqqFarIQOxcJacy34vj/view?usp=sharing">
+                <div class="gallery-scroll">
+                    <div class="gallery-title">Select Slide Engine Layout</div>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(1)">Slide 1: Cover Intro</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(2)">Slide 2: About Us</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(3)">Slide 3: Problem Statement</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(4)">Slide 4: ERP Blueprint</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(5)">Slide 5: Our Solution</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(6)">Slide 6: Solutions Used</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(7)">Slide 7: Pre & Post Analysis</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(8)">Slide 8: AI Capabilities</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(9)">Slide 9: Demo Video</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(10)">Slide 10: Heat maps & Stats</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(11)">Slide 11: Cloud Dashboard</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(12)">Slide 12: Action Stats</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(13)">Slide 13: Workflow Journey</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(14)">Slide 14: Global Partnerships</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(15)">Slide 15: Projects Delivered</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(16)">Slide 16: U.S Market Strategy</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(17)">Slide 17: Awards & Recog</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(18)">Slide 18: Core Leadership</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(19)">Slide 19: Thank You & Contact</button>
                 </div>
             </div>
-        </div> 
-        
-<div class="slide-card" style="margin-bottom: 30px;">
-            <div class="card-header">
-                Slide 15: HanuAI Workflow
-            </div>
-            <div class="card-body">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Main Title:</label>
-                    <input type="text" name="work_main" value="HanuAI Workflow: From Survey to Insights">
-                </div>
-                
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Subtitle (Italic):</label>
-                    <input type="text" name="work_sub" value="End-to-End Automated AI Models">
-                </div>
 
-                <label style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">Top 7 Workflow Steps (Under Circles):</label>
-                <div class="two-column" style="margin-bottom: 20px; gap: 10px; display: grid; grid-template-columns: repeat(4, 1fr);">
-                    <input type="text" name="step_1" value="GIS Mapping Before Survey">
-                    <input type="text" name="step_2" value="Survey Planning">
-                    <input type="text" name="step_3" value="Data Capture">
-                    <input type="text" name="step_4" value="Road Metadata Creation">
-                    <input type="text" name="step_5" value="Survey Data Upload">
-                    <input type="text" name="step_6" value="AI Data Processing">
-                    <input type="text" name="step_7" value="Final Dashboard">
+            <div class="workspace-center">
+                <div class="workspace-header">
+                    <h2 id="current-slide-title">Slide 1: Cover Intro</h2>
                 </div>
-
-                <label style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">Bottom Workflow Cards (Images & Text):</label>
-                <div class="two-column" style="gap: 15px;">
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 1 Image (GIS Mapping):</label>
-                        <input type="file" name="work_img_1" accept="image/*" style="margin-bottom: 10px; width: 100%;">
-                        <label>Box 1 Heading (Blue Box):</label>
-                        <input type="text" name="work_h1" value="GIS Road Mapping" style="margin-bottom: 5px;">
-                        <label>Box 1 Desc (Light Blue Box):</label>
-                        <input type="text" name="work_d1" value="GIS mapping of roads before survey to identify routes">
-                    </div>
+                <div class="workspace-body">
                     
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 2 Image (Setup):</label>
-                        <input type="file" name="work_img_2" accept="image/*" style="margin-bottom: 10px; width: 100%;">
-                        <label>Box 2 Heading (Blue Box):</label>
-                        <input type="text" name="work_h2" value="Data Capture Setup" style="margin-bottom: 5px;">
-                        <label>Box 2 Desc (Light Blue Box):</label>
-                        <input type="text" name="work_d2" value="Multi-mode capture on 2-wheelers and 4-wheelers">
+                    <div class="slide-preview-box">
+                        <span class="preview-tag">Blueprint Master Reference Snapshot</span>
+                        <img id="layout-preview-img" src="/static/preview/slide1.png" alt="Reference Blueprint Snapshot">
                     </div>
 
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 3 Image (Processing):</label>
-                        <input type="file" name="work_img_3" accept="image/*" style="margin-bottom: 10px; width: 100%;">
-                        <label>Box 3 Heading (Blue Box):</label>
-                        <input type="text" name="work_h3" value="Data Processing" style="margin-bottom: 5px;">
-                        <label>Box 3 Desc (Light Blue Box):</label>
-                        <input type="text" name="work_d3" value="Backend AI models process uploaded survey data">
-                    </div>
+                    <div class="form-container">
+                        
+                        <div id="form-block-1" class="slide-form-block active">
+                            <div class="form-group">
+                                <label>Upload Cover Background Image (intro_img):</label>
+                                <input type="file" name="intro_img" accept="image/*">
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(1, 'Cover Intro')">➕ Add Slide to My Deck</button>
+                        </div>
 
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 4 Image (Dashboard):</label>
-                        <input type="file" name="work_img_4" accept="image/*" style="margin-bottom: 10px; width: 100%;">
-                        <label>Box 4 Heading (Blue Box):</label>
-                        <input type="text" name="work_h4" value="Dashboard & Insights" style="margin-bottom: 5px;">
-                        <label>Box 4 Desc (Light Blue Box):</label>
-                        <input type="text" name="work_d4" value="GIS mapped roads with full analytics and reporting">
+                        <div id="form-block-2" class="slide-form-block">
+                            <div class="two-column">
+                                <div class="form-group">
+                                    <label>WHO WE ARE (Bullets):</label>
+                                    <textarea name="who_we_are" rows="3">AI-driven company transforming infrastructure using AI, GIS, and analytics.&#10;Focused on building smarter, more sustainable and efficient systems.</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>OUR GOAL (Bullets):</label>
+                                    <textarea name="our_goals" rows="3">Develop AI-powered integrated infrastructure solutions for future smart cities.&#10;Deliver advanced AI-driven solutions for road safety, monitoring & maintenance globally.</textarea>
+                                </div>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group"><label>Stat 1:</label><input type="text" name="about_stat1" value="1,85,000+ Lane KMs Processed"></div>
+                                <div class="form-group"><label>Stat 2:</label><input type="text" name="about_stat2" value="80,000+ Unique Roads Surveyed"></div>
+                                <div class="form-group"><label>Stat 3:</label><input type="text" name="about_stat3" value="250+ AI Detection Classes"></div>
+                                <div class="form-group"><label>Stat 4:</label><input type="text" name="about_stat4" value="20+ States Coverage"></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(2, 'About Us')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-3" class="slide-form-block">
+                            <div class="inner-box">
+                                <label>Problem 1: Heading & Details</label>
+                                <input type="text" name="psh_1" value="Expensive, Time-Consuming & Manual Surveys" style="margin-bottom:8px;">
+                                <textarea name="ds_1" rows="1">Manual road surveys are costly, slow, and manpower-intensive.</textarea>
+                            </div>
+                            <div class="inner-box">
+                                <label>Problem 2: Heading & Details</label>
+                                <input type="text" name="psh_2" value="Poor Infrastructure & Accidents" style="margin-bottom:8px;">
+                                <textarea name="ds_2" rows="1">Undetected road defects lead to accidents and economic losses.</textarea>
+                            </div>
+                            <div class="inner-box">
+                                <label>Problem 3: Heading & Details</label>
+                                <input type="text" name="psh_3" value="Lack of Digitization" style="margin-bottom:8px;">
+                                <textarea name="ds_3" rows="1">Road data remains siloed, limiting maintenance planning.</textarea>
+                            </div>
+                            <div class="inner-box">
+                                <label>Problem 4: Heading & Details</label>
+                                <input type="text" name="psh_4" value="Rapid Environmental Changes" style="margin-bottom:8px;">
+                                <textarea name="ds_4" rows="1">Climate change, traffic, and construction accelerate road damage.</textarea>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(3, 'Problem Statement')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-4" class="slide-form-block">
+                            <div class="form-group">
+                                <label>Main Slide Text Summary:</label>
+                                <textarea name="erp_main" rows="2">Complete Digital ERP Solution for Road Infrastructure with real-time monitoring and asset management.</textarea>
+                            </div>
+                            <div class="grid-2">
+                                <div class="inner-box"><label>Image 1:</label><input type="file" name="erp_img_1" accept="image/*"></div>
+                                <div class="inner-box"><label>Image 2:</label><input type="file" name="erp_img_2" accept="image/*"></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(4, 'ERP Blueprint')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-5" class="slide-form-block">
+                            <div class="form-group"><label>Main Context Layout Title:</label><input type="text" name="sol_main" value="Our devices can be mounted on any vehicle- 2-wheelers, 4-wheelers & more"></div>
+                            <div class="grid-2">
+                                <div class="inner-box"><input type="text" name="solh_1" value="Fast & Reliable" style="margin-bottom:6px; font-weight:700;"><textarea name="sold_1" rows="2">AI-powered data capture at survey speed with 99%+ uptime reliability</textarea></div>
+                                <div class="inner-box"><input type="text" name="solh_2" value="Cloud-Powered" style="margin-bottom:6px; font-weight:700;"><textarea name="sold_2" rows="2">All data stored securely on cloud — clients access anytime, anywhere</textarea></div>
+                                <div class="inner-box"><input type="text" name="solh_3" value="Scalable" style="margin-bottom:6px; font-weight:700;"><textarea name="sold_3" rows="2">From city roads to national highways — scales to any network size</textarea></div>
+                                <div class="inner-box"><input type="text" name="solh_4" value="Efficient" style="margin-bottom:6px; font-weight:700;"><textarea name="sold_4" rows="2">End-to-end automated AI models reduce manual effort by 80%+</textarea></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(5, 'Our Solution')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-6" class="slide-form-block">
+                            <div class="form-group"><label>Main Module Title:</label><input type="text" name="sol_used_main" value="Solution Used by Clients"></div>
+                            <div class="grid-2">
+                                <div class="inner-box"><input type="text" name="suh_1" value="Road Asset & Defect Detection"><textarea name="sud_1" rows="1" style="margin-top:4px;">AI detects 250+ classes of road defects and furniture</textarea></div>
+                                <div class="inner-box"><input type="text" name="suh_2" value="Stats & Dashboard"><textarea name="sud_2" rows="1" style="margin-top:4px;">Real-time statistics and GIS-mapped road analytics</textarea></div>
+                                <div class="inner-box"><input type="text" name="suh_3" value="Pre & Post Analysis"><textarea name="sud_3" rows="1" style="margin-top:4px;">Before/after comparisons for maintenance validation</textarea></div>
+                                <div class="inner-box"><input type="text" name="suh_4" value="Maintenance History"><textarea name="sud_4" rows="1" style="margin-top:4px;">Complete maintenance audit trail and scheduling</textarea></div>
+                                <div class="inner-box"><input type="text" name="suh_5" value="Overlap Detection & Road Assetisation"><textarea name="sud_5" rows="1" style="margin-top:4px;">Smart road segmentation and asset registration</textarea></div>
+                                <div class="inner-box"><input type="text" name="suh_6" value="Road Safety Analysis"><textarea name="sud_6" rows="1" style="margin-top:4px;">Safety audits for highways, rural and urban roads</textarea></div>
+                                <div class="inner-box"><input type="text" name="suh_7" value="DLP Audits & Objective Rating"><textarea name="sud_7" rows="1" style="margin-top:4px;">Objective road condition rating and defect liability audits</textarea></div>
+                                <div class="inner-box"><input type="text" name="suh_8" value="DPR Preparation"><textarea name="sud_8" rows="1" style="margin-top:4px;">Automated Detailed Project Report generation</textarea></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(6, 'Solutions Used')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-7" class="slide-form-block">
+                            <div class="form-group"><label>Header:</label><input type="text" name="pre_post_main" value="Pre and Post Analysis"></div>
+                            <div class="grid-2">
+                                <div class="inner-box"><label>Image 1 (Pre):</label><input type="file" name="pre_post_img_1" accept="image/*"></div>
+                                <div class="inner-box"><label>Image 2 (Post):</label><input type="file" name="pre_post_img_2" accept="image/*"></div>
+                                <div class="inner-box"><label>Image 3 (Pre):</label><input type="file" name="pre_post_img_3" accept="image/*"></div>
+                                <div class="inner-box"><label>Image 4 (Post):</label><input type="file" name="pre_post_img_4" accept="image/*"></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(7, 'Pre & Post Analysis')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-8" class="slide-form-block">
+                            <div class="form-group"><label>Header Title:</label><input type="text" name="ai_cap_main" value="AI Capabilities & Detection"></div>
+                            <div class="grid-2">
+                                <div class="inner-box"><label>Left Image:</label><input type="file" name="ai_cap_img_1" accept="image/*" style="margin-bottom:6px;"><input type="text" name="ai_cap_h1" value="PAVEMENT DEFECTS" style="margin-bottom:6px; font-weight:700;"><textarea name="ai_cap_b1" rows="3">Cracks&#10;Raveling&#10;Potholes&#10;Manholes&#10;Garbage</textarea></div>
+                                <div class="inner-box"><label>Right Image:</label><input type="file" name="ai_cap_img_2" accept="image/*" style="margin-bottom:6px;"><input type="text" name="ai_cap_h2" value="ROAD FURNITURE" style="margin-bottom:6px; font-weight:700;"><textarea name="ai_cap_b2" rows="3">Signage&#10;Lane Marking&#10;Poles&#10;Crash Barriers&#10;Solar Blinkers</textarea></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(8, 'AI Capabilities')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-9" class="slide-form-block">
+                            <div class="form-group"><label>Title:</label><input type="text" name="demo_main" value="Demo Video"></div>
+                            <div class="form-group"><label>Thumbnail Screen Image:</label><input type="file" name="demo_img_1" accept="image/*"></div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(9, 'Demo Video')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-10" class="slide-form-block">
+                            <div class="form-group"><label>Title:</label><input type="text" name="heat_map_main" value="Heat maps & Statistics in Dashboard"></div>
+                            <div class="form-group"><label>Full Dashboard Screenshot:</label><input type="file" name="heat_map_img_1" accept="image/*"></div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(10, 'Heat maps & Stats')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-11" class="slide-form-block">
+                            <div class="form-group"><label>Main Title:</label><input type="text" name="cloud_main" value="Cloud-Powered Dashboard: RoadAthena"></div>
+                            <div class="form-group"><label>Cloud Subtitle Bar:</label><input type="text" name="cloud_sub" value="All data is on the Cloud — Clients can access anytime, anywhere, on any device"></div>
+                            <div class="form-group"><label>Dashboard Center Image:</label><input type="file" name="cloud_img" accept="image/*"></div>
+                            <div class="grid-2">
+                                <div class="inner-box">
+                                    <label>Feature Blocks:</label>
+                                    <input type="text" name="cloud_f1" value="GIS Mapped Roads & Route View" style="margin-bottom:4px;">
+                                    <input type="text" name="cloud_f2" value="Graphs, Heat Maps & Pie Charts" style="margin-bottom:4px;">
+                                    <input type="text" name="cloud_f3" value="Pavement & Furniture Analysis" style="margin-bottom:4px;">
+                                    <input type="text" name="cloud_f4" value="Asset & Anomaly Detection" style="margin-bottom:4px;">
+                                </div>
+                                <div class="inner-box">
+                                    <label>Footer Tags Metrics:</label>
+                                    <input type="text" name="cf1" value="Fast" style="margin-bottom:4px;">
+                                    <input type="text" name="cf2" value="Secure" style="margin-bottom:4px;">
+                                    <input type="text" name="cf3" value="Cloud-Native" style="margin-bottom:4px;">
+                                    <input type="text" name="cf4" value="Mobile-Ready" style="margin-bottom:4px;">
+                                </div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(11, 'Cloud Dashboard')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-12" class="slide-form-block">
+                            <div class="two-column">
+                                <div class="form-group"><label>Main Title:</label><input type="text" name="action_main" value="HanuAI in ACTION"></div>
+                                <div class="form-group"><label>Subtitle:</label><input type="text" name="action_sub" value="Proven at scale across India and 3 countries globally"></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(12, 'Action Stats')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-13" class="slide-form-block">
+                            <div class="form-group"><label>Title Workflow Journey:</label><input type="text" name="work_main" value="HanuAI Workflow: From Survey to Insights"></div>
+                            <div class="grid-2">
+                                <div class="inner-box"><input type="text" name="work_h1" value="GIS Road Mapping"><input type="text" name="work_d1" value="GIS mapping of roads before survey" style="margin-top:4px;"></div>
+                                <div class="inner-box"><input type="text" name="work_h2" value="Data Capture Setup"><input type="text" name="work_d2" value="Multi-mode capture on vehicles" style="margin-top:4px;"></div>
+                                <div class="inner-box"><input type="text" name="work_h3" value="AI Data Processing"><input type="text" name="work_d3" value="Automated AI models run on cloud" style="margin-top:4px;"></div>
+                                <div class="inner-box"><input type="text" name="work_h4" value="Dashboard Delivery"><input type="text" name="work_d4" value="Final stats and heat maps ready for clients" style="margin-top:4px;"></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(13, 'Workflow Journey')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-14" class="slide-form-block">
+                            <div class="form-group"><label>Partnership Heading:</label><textarea name="partner_main" rows="2">International Partnerships&#10;Worked & Future collaboration with Countries</textarea></div>
+                            <div class="form-group"><label>Globe Center Vector Image:</label><input type="file" name="partner_globe_img" accept="image/*"></div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(14, 'Global Partnerships')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-15" class="slide-form-block">
+                            <div class="form-group"><label>Main Header:</label><input type="text" name="proj_main" value="Projects Delivered"></div>
+                            <div class="grid-2">
+                                <div class="inner-box"><input type="text" name="proj_h1" value="Indonesia" style="font-weight:700;"><textarea name="proj_d1" rows="1" style="margin-top:4px;">4,80,000 km completed in just 14 months</textarea></div>
+                                <div class="inner-box"><input type="text" name="proj_h2" value="NHAI, India" style="font-weight:700;"><textarea name="proj_d2" rows="1" style="margin-top:4px;">81,250 km of National Highways covered</textarea></div>
+                                <div class="inner-box"><input type="text" name="proj_h3" value="State Govts. (5 states)" style="font-weight:700;"><textarea name="proj_d3" rows="1" style="margin-top:4px;">5,000 km in 6 months across multiple states</textarea></div>
+                                <div class="inner-box"><input type="text" name="proj_h4" value="Gurugram & Manesar" style="font-weight:700;"><textarea name="proj_d4" rows="1" style="margin-top:4px;">2,000+ km completed in under 2 months</textarea></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(15, 'Projects Delivered')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-16" class="slide-form-block">
+                            <div class="form-group"><label>Main Title Strategy:</label><input type="text" name="us_main" value="U.S. Market Entry Strategy"></div>
+                            <div class="grid-2">
+                                <textarea name="us_b1" rows="1">Focus on high road-density states</textarea>
+                                <textarea name="us_b2" rows="1">Entry via pilot projects</textarea>
+                                <textarea name="us_b3" rows="1">Target: State DOTs, municipalities</textarea>
+                                <textarea name="us_b4" rows="1">Engage infrastructure investors</textarea>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(16, 'U.S Market Strategy')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-17" class="slide-form-block">
+                            <div class="form-group"><label>Main Title Accolades:</label><input type="text" name="recog_main" value="Recognition & Awards"></div>
+                            <div class="grid-2">
+                                <div class="inner-box"><input type="text" name="recog_h1" value="NASSCOM Emerge 50" style="font-weight:700;"><input type="text" name="recog_d1" value="National Winners" style="margin-top:4px;"></div>
+                                <div class="inner-box"><input type="text" name="recog_h2" value="Leap to Unicorn" style="font-weight:700;"><input type="text" name="recog_d2" value="Top 100 Startups" style="margin-top:4px;"></div>
+                                <div class="inner-box"><input type="text" name="recog_h3" value="Award Title 3" style="font-weight:700;"><input type="text" name="recog_d3" value="Award Details 3" style="margin-top:4px;"></div>
+                                <div class="inner-box"><input type="text" name="recog_h4" value="Award Title 4" style="font-weight:700;"><input type="text" name="recog_d4" value="Award Details 4" style="margin-top:4px;"></div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(17, 'Awards & Recog')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-18" class="slide-form-block">
+                            <div class="form-group"><label>Leadership Section Header:</label><input type="text" name="team_main" value="Core Team"></div>
+                            <div class="grid-2">
+                                <div class="inner-box">
+                                    <label style="font-size:11px;">Member 1 Photo:</label><input type="file" name="team_img_1" accept="image/*" style="margin-bottom:6px;">
+                                    <input type="text" name="team_name_1" value="Prerna Kalra" style="width:48%; display:inline-block; font-weight:700;">
+                                    <input type="text" name="team_role_1" value="Co-founder & CEO" style="width:48%; display:inline-block;">
+                                    <textarea name="team_desc_1" rows="2" style="margin-top:6px;">27+ years in IT & enterprise leadership</textarea>
+                                </div>
+                                <div class="inner-box">
+                                    <label style="font-size:11px;">Member 2 Photo:</label><input type="file" name="team_img_2" accept="image/*" style="margin-bottom:6px;">
+                                    <input type="text" name="team_name_2" value="Manav Singal" style="width:48%; display:inline-block; font-weight:700;">
+                                    <input type="text" name="team_role_2" value="Co-founder & CTO" style="width:48%; display:inline-block;">
+                                    <textarea name="team_desc_2" rows="2" style="margin-top:6px;">27+ years in IT; 19+ years at Infosys</textarea>
+                                </div>
+                                <div class="inner-box">
+                                    <label style="font-size:11px;">Member 3 Photo:</label><input type="file" name="team_img_3" accept="image/*" style="margin-bottom:6px;">
+                                    <input type="text" name="team_name_3" value="Team Member 3" style="width:48%; display:inline-block; font-weight:700;">
+                                    <input type="text" name="team_role_3" value="Designation" style="width:48%; display:inline-block;">
+                                    <textarea name="team_desc_3" rows="2" style="margin-top:6px;">Description goes here</textarea>
+                                </div>
+                                <div class="inner-box">
+                                    <label style="font-size:11px;">Member 4 Photo:</label><input type="file" name="team_img_4" accept="image/*" style="margin-bottom:6px;">
+                                    <input type="text" name="team_name_4" value="Team Member 4" style="width:48%; display:inline-block; font-weight:700;">
+                                    <input type="text" name="team_role_4" value="Designation" style="width:48%; display:inline-block;">
+                                    <textarea name="team_desc_4" rows="2" style="margin-top:6px;">Description goes here</textarea>
+                                </div>
+                            </div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(18, 'Core Leadership')">➕ Add Slide to My Deck</button>
+                        </div>
+
+                        <div id="form-block-19" class="slide-form-block">
+                            <div class="form-group"><label>Main Title:</label><input type="text" name="thank_main" value="Thank You" style="font-weight: bold;"></div>
+                            <div class="form-group"><label>Subtitle:</label><input type="text" name="thank_sub" value="A Made-in-India solution delivering impact in India and across the world"></div>
+                            <div class="form-group"><label>Contact Person Email:</label><input type="text" name="email_1" value="rahul@hanu.ai"></div>
+                            <div class="form-group"><label>Footer / Copyright Text:</label><input type="text" name="thank_copy" value="© HanuAI Private Limited"></div>
+                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(19, 'Thank You & Contact')">➕ Add Slide to My Deck</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
 
-<div class="slide-card" style="margin-bottom: 30px;">
-            <div class="card-header">
-                Slide 16: International Partnerships
-            </div>
-            <div class="card-body">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Main Title (Heading):</label>
-                    <textarea name="partner_main" rows="2">International Partnerships&#10;Worked & Future collaboration with Countries</textarea>
+            <div class="deck-sidebar">
+                <div class="deck-header">
+                    <h3>My Live Presentation Deck</h3>
                 </div>
-
-                <div class="form-group">
-                    <label>Globe Image:</label>
-                    <input type="file" name="partner_globe_img" accept="image/*" style="width: 100%; padding: 10px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
+                <div class="deck-list" id="active-deck-container"></div>
+                <div class="deck-footer">
+                    <button type="submit" class="generate-btn">⚡ Build & Download PPT</button>
                 </div>
             </div>
-        </div>
 
-<div class="slide-card" style="margin-bottom: 30px;">
-            <div class="card-header">
-                Slide 17: Projects Delivered
-            </div>
-            <div class="card-body">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Main Title:</label>
-                    <input type="text" name="proj_main" value="Projects Delivered">
-                </div>
-
-                <label style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">Left Side: 4 Project Cards</label>
-                <div class="two-column" style="margin-bottom: 20px; gap: 15px;">
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Flag/Icon 1 (Emoji or Text):</label>
-                        <input type="text" name="proj_f1" value="🇮🇩" style="margin-bottom: 5px;">
-                        <label>Title 1:</label>
-                        <input type="text" name="proj_h1" value="Indonesia" style="margin-bottom: 5px; font-weight: bold;">
-                        <label>Desc 1:</label>
-                        <textarea name="proj_d1" rows="2">4,80,000 km completed in just 14 months — largest RAMS deployment</textarea>
-                    </div>
-
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Flag/Icon 2 (Emoji or Text):</label>
-                        <input type="text" name="proj_f2" value="🇮🇳" style="margin-bottom: 5px;">
-                        <label>Title 2:</label>
-                        <input type="text" name="proj_h2" value="NHAI, India" style="margin-bottom: 5px; font-weight: bold;">
-                        <label>Desc 2:</label>
-                        <textarea name="proj_d2" rows="2">81,250 km of National Highways covered in 15 months</textarea>
-                    </div>
-
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Flag/Icon 3 (Emoji or Text):</label>
-                        <input type="text" name="proj_f3" value="🏛️" style="margin-bottom: 5px;">
-                        <label>Title 3:</label>
-                        <input type="text" name="proj_h3" value="State Govts. (5 states)" style="margin-bottom: 5px; font-weight: bold;">
-                        <label>Desc 3:</label>
-                        <textarea name="proj_d3" rows="2">5,000 km in 6 months (ongoing) across multiple states</textarea>
-                    </div>
-
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Flag/Icon 4 (Emoji or Text):</label>
-                        <input type="text" name="proj_f4" value="🏙️" style="margin-bottom: 5px;">
-                        <label>Title 4:</label>
-                        <input type="text" name="proj_h4" value="Gurugram & Manesar (Municipal Corporation)" style="margin-bottom: 5px; font-weight: bold;">
-                        <label>Desc 4:</label>
-                        <textarea name="proj_d4" rows="2">2,000+ km completed in under 2 months</textarea>
-                    </div>
-                </div>
-
-                <label style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">Right Side: Map & Banner</label>
-                <div class="two-column" style="gap: 15px;">
-                    <div class="inner-box" style="padding: 15px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 8px;">
-                        <label>Right Map Image (Only Image here):</label>
-                        <input type="file" name="proj_map_img" accept="image/*" style="width: 100%;">
-                    </div>
-                    <div class="inner-box" style="padding: 15px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 8px;">
-                        <label>Bottom Blue Banner Text:</label>
-                        <input type="text" name="proj_banner" value="Presence in 20+ States across India">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-<div class="slide-card" style="margin-bottom: 30px;">
-            <div class="card-header">
-                Slide 18: U.S. Market Entry Strategy
-            </div>
-            <div class="card-body">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Main Title:</label>
-                    <input type="text" name="us_main" value="U.S. Market Entry Strategy">
-                </div>
-
-                <label style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">Strategy Boxes (6 Points):</label>
-                <div class="two-column" style="gap: 15px;">
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 1 (Top Left):</label>
-                        <textarea name="us_b1" rows="3">Focus on high road-density states (e.g., Texas, California)</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 2 (Top Middle):</label>
-                        <textarea name="us_b2" rows="3">Entry via pilot projects & strategic partnerships</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 3 (Top Right):</label>
-                        <textarea name="us_b3" rows="3">Target: State DOTs, municipalities, infrastructure agencies</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 4 (Bottom Left):</label>
-                        <textarea name="us_b4" rows="3">Engage DeepTech & infrastructure-focused investors in the U.S.</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 5 (Bottom Middle):</label>
-                        <textarea name="us_b5" rows="3">Collaborate with engineering firms & system integrators</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Box 6 (Bottom Right):</label>
-                        <textarea name="us_b6" rows="3">Build partnerships alongside funding to accelerate market access</textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-<div class="slide-card" style="margin-bottom: 30px;">
-            <div class="card-header">
-                Slide 19: Recognition & Awards
-            </div>
-            <div class="card-body">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Main Title:</label>
-                    <input type="text" name="recog_main" value="Recognition & Awards">
-                </div>
-
-                <label style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">Left Side (Images & Caption):</label>
-                <div class="two-column" style="margin-bottom: 20px; gap: 15px;">
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Top Image (e.g., Delegation):</label>
-                        <input type="file" name="recog_img_1" accept="image/*" style="width: 100%; margin-bottom: 10px;">
-                        <label>Blue Caption under Top Image:</label>
-                        <textarea name="recog_cap" rows="2">Member of India-Malaysia CEOs Forum&#10;Hon. PM Modi Ji's Delegation</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 15px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px;">
-                        <label>Bottom Image (e.g., NASSCOM):</label>
-                        <input type="file" name="recog_img_2" accept="image/*" style="width: 100%;">
-                    </div>
-                </div>
-
-                <label style="font-weight: bold; color: #0056b3; display: block; margin-bottom: 10px;">Right Side (8 Award Boxes):</label>
-                <div class="two-column" style="gap: 15px;">
-                    <div class="inner-box" style="padding: 10px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 5px;">
-                        <input type="text" name="recog_i1" value="🏆" title="Icon/Emoji 1" style="width: 15%; display:inline-block;">
-                        <input type="text" name="recog_h1" value="NASSCOM Emerge 50" style="width: 80%; display:inline-block; font-weight:bold;">
-                        <textarea name="recog_d1" rows="1" style="width: 100%; margin-top:5px;">National Winners – Deep Tech Award</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 5px;">
-                        <input type="text" name="recog_i2" value="🦄" title="Icon/Emoji 2" style="width: 15%; display:inline-block;">
-                        <input type="text" name="recog_h2" value="Leap to Unicorn" style="width: 80%; display:inline-block; font-weight:bold;">
-                        <textarea name="recog_d2" rows="1" style="width: 100%; margin-top:5px;">Top 100 Startups – MoneyControl & IDFC Bank</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 5px;">
-                        <input type="text" name="recog_i3" value="🌐" title="Icon/Emoji 3" style="width: 15%; display:inline-block;">
-                        <input type="text" name="recog_h3" value="World Bank Summit" style="width: 80%; display:inline-block; font-weight:bold;">
-                        <textarea name="recog_d3" rows="1" style="width: 100%; margin-top:5px;">Global Digital Summit, Washington DC, USA (2024)</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 5px;">
-                        <input type="text" name="recog_i4" value="🇮🇳" title="Icon/Emoji 4" style="width: 15%; display:inline-block;">
-                        <input type="text" name="recog_h4" value="Republic Day 2026" style="width: 80%; display:inline-block; font-weight:bold;">
-                        <textarea name="recog_d4" rows="1" style="width: 100%; margin-top:5px;">Selected by DPIIT among 50 innovative startups</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 5px;">
-                        <input type="text" name="recog_i5" value="🌎" title="Icon/Emoji 5" style="width: 15%; display:inline-block;">
-                        <input type="text" name="recog_h5" value="TiEcon 2024 USA" style="width: 80%; display:inline-block; font-weight:bold;">
-                        <textarea name="recog_d5" rows="1" style="width: 100%; margin-top:5px;">TIE 50 Winners – Silicon Valley</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 5px;">
-                        <input type="text" name="recog_i6" value="⭐" title="Icon/Emoji 6" style="width: 15%; display:inline-block;">
-                        <input type="text" name="recog_h6" value="Selected in Forbes100" style="width: 80%; display:inline-block; font-weight:bold;">
-                        <textarea name="recog_d6" rows="1" style="width: 100%; margin-top:5px;">Most Promising Startups consecutively for 2 years</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 5px;">
-                        <input type="text" name="recog_i7" value="☁️" title="Icon/Emoji 7" style="width: 15%; display:inline-block;">
-                        <input type="text" name="recog_h7" value="Google Cloud" style="width: 80%; display:inline-block; font-weight:bold;">
-                        <textarea name="recog_d7" rows="1" style="width: 100%; margin-top:5px;">RoadAthena Case Study featured on Google Cloud</textarea>
-                    </div>
-                    <div class="inner-box" style="padding: 10px; background: #e3f2fd; border: 1px solid #b6d4fe; border-radius: 5px;">
-                        <input type="text" name="recog_i8" value="📰" title="Icon/Emoji 8" style="width: 15%; display:inline-block;">
-                        <input type="text" name="recog_h8" value="YourStory Tech30" style="width: 80%; display:inline-block; font-weight:bold;">
-                        <textarea name="recog_d8" rows="1" style="width: 100%; margin-top:5px;">HanuAI selected in Tech30 & featured nationally</textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <button type="submit" class="submit-btn">⚡ Generate PPT Presentation</button>
-    </form>
+        </form>
     </div>
- </div>
+
     <script>
-        function addInput(containerId, prefix) {
-            const container = document.getElementById(containerId);
-            const count = container.getElementsByTagName('input').length + 1;
-            const div = document.createElement('div');
-            div.className = 'form-group';
-            const tagExample = prefix === 'who_' ? `[who_we_are_${count}]` : `[our_goals_${count}]`;
-            div.innerHTML = `<input type="text" name="${prefix}${count}" placeholder="Point ${count} (Replaces ${tagExample})">`;
-            container.appendChild(div);
+        let currentDeck = [];
+        let dragStartIndex = -1;
+
+        function loadWorkspace(slideId) {
+            document.querySelectorAll('.slide-form-block').forEach(b => b.classList.remove('active'));
+            const selectedBlock = document.getElementById(`form-block-${slideId}`);
+            if (selectedBlock) selectedBlock.classList.add('active');
+            
+            document.getElementById('current-slide-title').innerText = `Slide ${slideId} Workspace`;
+            document.getElementById('layout-preview-img').src = `/static/preview/slide${slideId}.png`;
+        }
+
+        function addSlideToDeck(slideId, title) {
+            let cleanTitle = title.replace(/Slide \d+:\s*/g, '');
+            const uniqueId = 'slide_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+            currentDeck.push({ uniqueId: uniqueId, slideId: slideId, title: cleanTitle });
+            renderDeck();
+        }
+
+        function deleteFromDeck(uniqueId) {
+            currentDeck = currentDeck.filter(item => item.uniqueId !== uniqueId);
+            renderDeck();
+        }
+
+        function handleDragStart(e) {
+            dragStartIndex = +this.dataset.index;
+            e.dataTransfer.effectAllowed = 'move';
+            this.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragEnter(e) { this.classList.add('over'); }
+        function handleDragLeave(e) { this.classList.remove('over'); }
+
+        function handleDrop(e) {
+            e.stopPropagation();
+            const dragEndIndex = +this.dataset.index;
+            if (dragStartIndex !== dragEndIndex) {
+                const itemToMove = currentDeck.splice(dragStartIndex, 1)[0];
+                currentDeck.splice(dragEndIndex, 0, itemToMove);
+                renderDeck();
+            }
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            document.querySelectorAll('.deck-item').forEach(item => item.classList.remove('over'));
+        }
+
+        function renderDeck() {
+            const container = document.getElementById('active-deck-container');
+            container.innerHTML = '';
+            
+            currentDeck.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'deck-item';
+                div.draggable = true;
+                div.dataset.index = index;
+                
+                div.innerHTML = `
+                    <div class="deck-item-info">
+                        <span class="drag-handle" title="Drag to reorder">⠿</span>
+                        ${index + 1}. ${item.title}
+                    </div>
+                    <button type="button" class="control-btn delete" onclick="deleteFromDeck('${item.uniqueId}')">✕</button>
+                `;
+
+                div.addEventListener('dragstart', handleDragStart);
+                div.addEventListener('dragover', handleDragOver);
+                div.addEventListener('dragenter', handleDragEnter);
+                div.addEventListener('dragleave', handleDragLeave);
+                div.addEventListener('drop', handleDrop);
+                div.addEventListener('dragend', handleDragEnd);
+
+                container.appendChild(div);
+            });
+
+            document.getElementById('slide_order_json').value = JSON.stringify(currentDeck);
         }
     </script>
-
 </body>
-
 </html>
