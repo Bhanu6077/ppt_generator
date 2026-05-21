@@ -6,88 +6,129 @@
     <title>Road Athena - Ultimate PPT Builder</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4f46e5;        /* Premium Indigo */
+            --primary-hover: #4338ca;
+            --bg-body: #f1f5f9;        /* Light Slate background */
+            --bg-surface: #ffffff;
+            --text-dark: #0f172a;      /* Slate 900 */
+            --text-muted: #64748b;     /* Slate 500 */
+            --border-light: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius-md: 8px;
+            --radius-lg: 16px;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background: #f0f4f8; color: #2d3748; height: 100vh; overflow: hidden; }
+        
+        body { background: var(--bg-body); color: var(--text-dark); height: 100vh; overflow: hidden; }
+
+        /* Custom Mac-style Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
         .app-workspace { display: flex; height: 100vh; width: 100vw; }
-        /* Update this in your CSS section */
 
-        /* ================= COLUMN 1 ================= */
-        .template-gallery { width: 300px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; flex-shrink: 0; }
-        .brand-header { padding: 20px; background: #0056b3; color: white; text-align: center; }
-        .brand-header h1 { font-size: 22px; font-weight: 700; }
-        .brand-header p { font-size: 12px; opacity: 0.8; margin-top: 3px; }
-        .gallery-scroll { flex-grow: 1; overflow-y: auto; padding: 15px 12px; }
-        .gallery-title { font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; padding-left: 5px; }
-        .gallery-item { width: 100%; padding: 12px 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; text-align: left; font-size: 13px; font-weight: 600; color: #4a5568; cursor: pointer; margin-bottom: 8px; transition: all 0.2s; }
-        .gallery-item:hover { background: #e6f0fa; color: #0056b3; border-color: #bee3f8; }
-
-        /* ================= COLUMN 2 ================= */
-        .workspace-center { flex-grow: 1; display: flex; flex-direction: column; background: #f7fafc; overflow-y: auto; border-right: 1px solid #e2e8f0; }
-        .workspace-header { padding: 20px 40px; background: white; border-bottom: 1px solid #e2e8f0; }
-        .workspace-header h2 { font-size: 18px; color: #1a202c; font-weight: 700; }
-        .workspace-body { 
-    padding: 30px 40px; 
-    max-width: 850px; 
-    margin: 0 auto; 
-    width: 100%; 
-    height: 100%;       /* Naya add kiya */
-    overflow-y: auto;    /* Naya add kiya */
-}
-        .workspace-center {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    background: #f7fafc;
-    overflow: hidden; /* Naya */
-}
-
-.workspace-body {
-    flex-grow: 1;
-    overflow-y: auto; /* Naya */
-    padding: 30px 40px;
-}
-        .slide-preview-box { background: #e2e8f0; width: 100%; height: 280px; border-radius: 10px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #cbd5e0; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-        .slide-preview-box img { width: 100%; height: 100%; object-fit: contain; background: #dce4ec; }
-        .preview-tag { position: absolute; top: 12px; left: 12px; background: rgba(0, 86, 179, 0.9); color: white; padding: 5px 10px; font-size: 11px; border-radius: 4px; font-weight: bold; }
-
-        .form-container { background: white; border-radius: 12px; padding: 25px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
-        input[type="text"], textarea { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px; color: #2d3748; background: #fafbfc; }
-        input[type="text"]:focus, textarea:focus { border-color: #0056b3; background: #fff; outline: none; box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1); }
-        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .inner-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
+        /* ================= COLUMN 1: GALLERY ================= */
+        .template-gallery { width: 320px; background: var(--bg-surface); border-right: 1px solid var(--border-light); display: flex; flex-direction: column; flex-shrink: 0; z-index: 10; box-shadow: var(--shadow-sm); }
         
-        .add-to-deck-btn { width: 100%; padding: 14px; background: #0056b3; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .add-to-deck-btn:hover { background: #004494; }
-
-        /* ================= COLUMN 3 ================= */
-        .deck-sidebar { width: 340px; background: #ffffff; display: flex; flex-direction: column; flex-shrink: 0; border-left: 1px solid #e2e8f0; }
-        .deck-header { padding: 20px; border-bottom: 1px solid #e2e8f0; background: #2d3748; color: white; }
-        .deck-header h3 { font-size: 16px; font-weight: 700; }
-        .deck-list { flex-grow: 1; overflow-y: auto; padding: 15px; background: #f8fafc; }
+        .brand-header { padding: 25px 20px; background: linear-gradient(135deg, #1e293b, #0f172a); color: white; text-align: left; }
+        .brand-header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+        .brand-header h1::before { content: "⚡"; font-size: 22px; }
+        .brand-header p { font-size: 12px; color: #94a3b8; margin-top: 6px; font-weight: 500; }
         
-        .deck-item { background: #ffffff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.02); animation: slideIn 0.2s ease; cursor: grab; }
-        .deck-item:active { cursor: grabbing; }
-        .deck-item.dragging { opacity: 0.4; background: #edf2f7; }
-        .deck-item.over { border: 2px dashed #0056b3; background: #e6f0fa; transform: scale(1.02); }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+        .theme-picker-box { padding: 18px 20px; border-bottom: 1px solid var(--border-light); background: #f8fafc; }
+        .theme-picker-box label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .theme-picker-flex { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+        input[type="color"] { width: 36px; height: 36px; border: 2px solid #e2e8f0; border-radius: 50%; cursor: pointer; padding: 0; background: none; overflow: hidden; }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
         
-        .deck-item-info { font-size: 13px; font-weight: 600; color: #2d3748; display: flex; align-items: center; max-width: 210px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .drag-handle { color: #a0aec0; margin-right: 10px; font-size: 16px; cursor: grab; }
-
-        .control-btn.delete { background: white; border: 1px solid #cbd5e0; padding: 4px 6px; border-radius: 4px; font-size: 11px; cursor: pointer; color: #4a5568; transition: 0.2s; }
-        .control-btn.delete:hover { background: #fed7d7; color: #c53030; border-color: #feb2b2; }
-
-        .deck-footer { padding: 20px; border-top: 1px solid #e2e8f0; background: #ffffff; }
-        .generate-btn { width: 100%; padding: 16px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2); transition: 0.2s; }
-        .generate-btn:hover { background: #218838; transform: translateY(-1px); }
+        .gallery-scroll { flex-grow: 1; overflow-y: auto; padding: 20px 15px; }
+        .gallery-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 15px; padding-left: 5px; }
         
-        .slide-form-block { display: none; }
+        .gallery-item { width: 100%; padding: 14px 16px; background: transparent; border: 1px solid transparent; border-radius: var(--radius-md); text-align: left; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; margin-bottom: 6px; transition: all 0.2s ease; display: flex; align-items: center; }
+        .gallery-item::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #cbd5e1; margin-right: 10px; transition: all 0.2s ease; }
+        .gallery-item:hover { background: #f8fafc; color: var(--primary); border-color: var(--border-light); transform: translateX(4px); }
+        .gallery-item:hover::before { background: var(--primary); transform: scale(1.5); }
+
+        /* ================= COLUMN 2: WORKSPACE ================= */
+        .workspace-center { flex-grow: 1; display: flex; flex-direction: column; background: var(--bg-body); overflow: hidden; position: relative; }
+        
+        .workspace-header { padding: 20px 40px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border-light); z-index: 5; }
+        .workspace-header h2 { font-size: 18px; color: var(--text-dark); font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .workspace-header h2::before { content: ""; width: 12px; height: 12px; background: var(--primary); border-radius: 3px; display: inline-block; }
+        
+        .workspace-body { flex-grow: 1; padding: 40px 40px 100px; overflow-y: auto; scroll-behavior: smooth; }
+        .form-content-wrapper { max-width: 900px; margin: 0 auto; width: 100%; }
+        
+        .slide-preview-box { background: var(--bg-surface); width: 100%; height: 320px; border-radius: var(--radius-lg); margin-bottom: 30px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--border-light); position: relative; box-shadow: var(--shadow-sm); padding: 10px; }
+        .slide-preview-box img { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
+        .preview-tag { position: absolute; top: 16px; left: 16px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); color: white; padding: 6px 12px; font-size: 11px; border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; }
+
+        .form-container { background: transparent; }
+        
+        /* Premium Form Fields */
+        .form-group { margin-bottom: 24px; }
+        label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+        
+        input[type="text"], textarea { width: 100%; padding: 14px 16px; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 14px; color: var(--text-dark); background: var(--bg-surface); box-shadow: var(--shadow-sm); transition: all 0.2s ease; line-height: 1.5; }
+        input[type="text"]:hover, textarea:hover { border-color: #cbd5e1; }
+        input[type="text"]:focus, textarea:focus { border-color: var(--primary); background: var(--bg-surface); outline: none; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); }
+        
+        input[type="file"] { width: 100%; padding: 10px; border: 1px dashed #cbd5e1; border-radius: var(--radius-md); font-size: 13px; color: var(--text-muted); background: #f8fafc; cursor: pointer; transition: all 0.2s ease; }
+        input[type="file"]:hover { border-color: var(--primary); background: #e0e7ff; color: var(--primary); }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        
+        .inner-box { background: var(--bg-surface); border: 1px solid var(--border-light); padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: all 0.2s ease; }
+        .inner-box:hover { box-shadow: var(--shadow-md); border-color: #cbd5e1; }
+        
+        .add-to-deck-btn { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: var(--radius-md); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25); }
+        .add-to-deck-btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3); }
+        .add-to-deck-btn:active { transform: translateY(0); }
+
+        /* ================= COLUMN 3: LIVE DECK ================= */
+        .deck-sidebar { width: 360px; background: var(--bg-surface); display: flex; flex-direction: column; flex-shrink: 0; border-left: 1px solid var(--border-light); box-shadow: -4px 0 15px rgba(0,0,0,0.02); z-index: 10; }
+        
+        .deck-header { padding: 25px 20px; border-bottom: 1px solid var(--border-light); background: #f8fafc; }
+        .deck-header h3 { font-size: 15px; font-weight: 700; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+        .deck-header h3::before { content: "📋"; font-size: 18px; }
+        
+        .deck-list { flex-grow: 1; overflow-y: auto; padding: 20px; background: var(--bg-surface); }
+        
+        .deck-item { background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 14px 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: grab; transition: all 0.2s ease; }
+        .deck-item:hover { border-color: #cbd5e1; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .deck-item:active { cursor: grabbing; transform: scale(0.98); }
+        
+        .deck-item.dragging { opacity: 0.5; background: #f8fafc; border-style: dashed; }
+        .deck-item.over { border: 2px dashed var(--primary); background: #e0e7ff; transform: scale(1.02); }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .deck-item-info { font-size: 14px; font-weight: 600; color: var(--text-dark); display: flex; align-items: center; gap: 12px; }
+        .drag-handle { color: #cbd5e1; font-size: 16px; cursor: grab; display: flex; flex-direction: column; gap: 2px; }
+        .drag-handle::before, .drag-handle::after { content: ""; display: block; width: 12px; height: 2px; background: #94a3b8; border-radius: 2px; }
+        .deck-item:hover .drag-handle::before, .deck-item:hover .drag-handle::after { background: var(--text-muted); }
+        .deck-item:active .drag-handle { cursor: grabbing; }
+
+        .control-btn.delete { background: #fef2f2; border: 1px solid #fee2e2; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; color: #ef4444; transition: all 0.2s ease; }
+        .control-btn.delete:hover { background: #ef4444; color: white; border-color: #ef4444; }
+
+        .deck-footer { padding: 24px; border-top: 1px solid var(--border-light); background: #f8fafc; }
+        .generate-btn { width: 100%; padding: 18px; background: #10b981; color: white; border: none; border-radius: var(--radius-md); font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 0.5px; }
+        .generate-btn:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); }
+        .generate-btn:active { transform: translateY(0); }
+        
+        .slide-form-block { display: none; animation: fadeIn 0.4s ease; }
         .slide-form-block.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -103,16 +144,16 @@
                     <p>Dynamic Core Deck Customizer</p>
                 </div>
                 
-                <div style="padding: 15px; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
-                    <label style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase;">Master Brand Theme</label>
-                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
-                        <input type="color" name="theme_color" value="#0056b3" style="width: 40px; height: 40px; border: none; border-radius: 4px; cursor: pointer;">
-                        <span style="font-size: 12px; color: #4a5568; font-weight: 600;">Choose Accent Color</span>
+                <div class="theme-picker-box">
+                    <label>Master Brand Theme</label>
+                    <div class="theme-picker-flex">
+                        <input type="color" name="theme_color" value="#0056b3">
+                        <span style="font-size: 13px; color: var(--text-dark); font-weight: 600;">Accent Color</span>
                     </div>
                 </div>
 
                 <div class="gallery-scroll">
-                    <div class="gallery-title">Select Slide Engine Layout</div>
+                    <div class="gallery-title">Select Template Module</div>
                     <button type="button" class="gallery-item" onclick="loadWorkspace(1)">Slide 1: Cover Intro</button>
                     <button type="button" class="gallery-item" onclick="loadWorkspace(2)">Slide 2: About Us</button>
                     <button type="button" class="gallery-item" onclick="loadWorkspace(3)">Slide 3: Problem Statement</button>
@@ -140,256 +181,402 @@
                     <h2 id="current-slide-title">Slide 1: Cover Intro</h2>
                 </div>
                 <div class="workspace-body">
-                    
-                    <div class="slide-preview-box">
-                        <span class="preview-tag">Blueprint Master Reference Snapshot</span>
-                        <img id="layout-preview-img" src="/static/preview/slide1.png" alt="Reference Blueprint Snapshot">
-                    </div>
-
-                    <div class="form-container">
+                    <div class="form-content-wrapper">
                         
-                        <div id="form-block-1" class="slide-form-block active">
-                            <div class="form-group">
-                                <label>Upload Cover Background Image (intro_img):</label>
-                                <input type="file" name="intro_img" accept="image/*">
-                            </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(1, 'Cover Intro')">➕ Add Slide to My Deck</button>
+                        <div class="slide-preview-box">
+                            <span class="preview-tag">Master Layout Reference</span>
+                            <img id="layout-preview-img" src="/static/preview/slide1.png" alt="Reference Blueprint Snapshot">
                         </div>
 
-                        <div id="form-block-2" class="slide-form-block">
-                            <div class="two-column">
-                                <div class="form-group">
-                                    <label>WHO WE ARE (Bullets):</label>
-                                    <textarea name="who_we_are" rows="3">AI-driven company transforming infrastructure using AI, GIS, and analytics.&#10;Focused on building smarter, more sustainable and efficient systems.</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>OUR GOAL (Bullets):</label>
-                                    <textarea name="our_goals" rows="3">Develop AI-powered integrated infrastructure solutions for future smart cities.&#10;Deliver advanced AI-driven solutions for road safety, monitoring & maintenance globally.</textarea>
-                                </div>
-                            </div>
-                            <div class="grid-2">
-                                <div class="form-group"><label>Stat 1:</label><input type="text" name="about_stat1" value="1,85,000+ Lane KMs Processed"></div>
-                                <div class="form-group"><label>Stat 2:</label><input type="text" name="about_stat2" value="80,000+ Unique Roads Surveyed"></div>
-                                <div class="form-group"><label>Stat 3:</label><input type="text" name="about_stat3" value="250+ AI Detection Classes"></div>
-                                <div class="form-group"><label>Stat 4:</label><input type="text" name="about_stat4" value="20+ States Coverage"></div>
-                            </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(2, 'About Us')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-3" class="slide-form-block">
-                            <div class="inner-box">
-                                <label>Problem 1: Heading & Details</label>
-                                <input type="text" name="psh_1" value="Expensive, Time-Consuming & Manual Surveys" style="margin-bottom:8px;">
-                                <textarea name="ds_1" rows="1">Manual road surveys are costly, slow, and manpower-intensive.</textarea>
-                            </div>
-                            <div class="inner-box">
-                                <label>Problem 2: Heading & Details</label>
-                                <input type="text" name="psh_2" value="Poor Infrastructure & Accidents" style="margin-bottom:8px;">
-                                <textarea name="ds_2" rows="1">Undetected road defects lead to accidents and economic losses.</textarea>
-                            </div>
-                            <div class="inner-box">
-                                <label>Problem 3: Heading & Details</label>
-                                <input type="text" name="psh_3" value="Lack of Digitization" style="margin-bottom:8px;">
-                                <textarea name="ds_3" rows="1">Road data remains siloed, limiting maintenance planning.</textarea>
-                            </div>
-                            <div class="inner-box">
-                                <label>Problem 4: Heading & Details</label>
-                                <input type="text" name="psh_4" value="Rapid Environmental Changes" style="margin-bottom:8px;">
-                                <textarea name="ds_4" rows="1">Climate change, traffic, and construction accelerate road damage.</textarea>
-                            </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(3, 'Problem Statement')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-4" class="slide-form-block">
-                            <div class="form-group">
-                                <label>Main Slide Text Summary:</label>
-                                <textarea name="erp_main" rows="2">Complete Digital ERP Solution for Road Infrastructure with real-time monitoring and asset management.</textarea>
-                            </div>
-                            <div class="grid-2">
-                                <div class="inner-box"><label>Image 1:</label><input type="file" name="erp_img_1" accept="image/*"></div>
-                                <div class="inner-box"><label>Image 2:</label><input type="file" name="erp_img_2" accept="image/*"></div>
-                            </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(4, 'ERP Blueprint')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-5" class="slide-form-block">
-                            <div class="form-group"><label>Main Context Layout Title:</label><input type="text" name="sol_main" value="Our devices can be mounted on any vehicle- 2-wheelers, 4-wheelers & more"></div>
-                            <div class="grid-2">
-                                <div class="inner-box"><input type="text" name="solh_1" value="Fast & Reliable" style="margin-bottom:6px; font-weight:700;"><textarea name="sold_1" rows="2">AI-powered data capture at survey speed with 99%+ uptime reliability</textarea></div>
-                                <div class="inner-box"><input type="text" name="solh_2" value="Cloud-Powered" style="margin-bottom:6px; font-weight:700;"><textarea name="sold_2" rows="2">All data stored securely on cloud — clients access anytime, anywhere</textarea></div>
-                                <div class="inner-box"><input type="text" name="solh_3" value="Scalable" style="margin-bottom:6px; font-weight:700;"><textarea name="sold_3" rows="2">From city roads to national highways — scales to any network size</textarea></div>
-                                <div class="inner-box"><input type="text" name="solh_4" value="Efficient" style="margin-bottom:6px; font-weight:700;"><textarea name="sold_4" rows="2">End-to-end automated AI models reduce manual effort by 80%+</textarea></div>
-                            </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(5, 'Our Solution')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-6" class="slide-form-block">
-                            <div class="form-group"><label>Main Module Title:</label><input type="text" name="sol_used_main" value="Solution Used by Clients"></div>
-                            <div class="grid-2">
-                                <div class="inner-box"><input type="text" name="suh_1" value="Road Asset & Defect Detection"><textarea name="sud_1" rows="1" style="margin-top:4px;">AI detects 250+ classes of road defects and furniture</textarea></div>
-                                <div class="inner-box"><input type="text" name="suh_2" value="Stats & Dashboard"><textarea name="sud_2" rows="1" style="margin-top:4px;">Real-time statistics and GIS-mapped road analytics</textarea></div>
-                                <div class="inner-box"><input type="text" name="suh_3" value="Pre & Post Analysis"><textarea name="sud_3" rows="1" style="margin-top:4px;">Before/after comparisons for maintenance validation</textarea></div>
-                                <div class="inner-box"><input type="text" name="suh_4" value="Maintenance History"><textarea name="sud_4" rows="1" style="margin-top:4px;">Complete maintenance audit trail and scheduling</textarea></div>
-                                <div class="inner-box"><input type="text" name="suh_5" value="Overlap Detection & Road Assetisation"><textarea name="sud_5" rows="1" style="margin-top:4px;">Smart road segmentation and asset registration</textarea></div>
-                                <div class="inner-box"><input type="text" name="suh_6" value="Road Safety Analysis"><textarea name="sud_6" rows="1" style="margin-top:4px;">Safety audits for highways, rural and urban roads</textarea></div>
-                                <div class="inner-box"><input type="text" name="suh_7" value="DLP Audits & Objective Rating"><textarea name="sud_7" rows="1" style="margin-top:4px;">Objective road condition rating and defect liability audits</textarea></div>
-                                <div class="inner-box"><input type="text" name="suh_8" value="DPR Preparation"><textarea name="sud_8" rows="1" style="margin-top:4px;">Automated Detailed Project Report generation</textarea></div>
-                            </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(6, 'Solutions Used')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-7" class="slide-form-block">
-                            <div class="form-group"><label>Header:</label><input type="text" name="pre_post_main" value="Pre and Post Analysis"></div>
-                            <div class="grid-2">
-                                <div class="inner-box"><label>Image 1 (Pre):</label><input type="file" name="pre_post_img_1" accept="image/*"></div>
-                                <div class="inner-box"><label>Image 2 (Post):</label><input type="file" name="pre_post_img_2" accept="image/*"></div>
-                                <div class="inner-box"><label>Image 3 (Pre):</label><input type="file" name="pre_post_img_3" accept="image/*"></div>
-                                <div class="inner-box"><label>Image 4 (Post):</label><input type="file" name="pre_post_img_4" accept="image/*"></div>
-                            </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(7, 'Pre & Post Analysis')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-8" class="slide-form-block">
-                            <div class="form-group"><label>Header Title:</label><input type="text" name="ai_cap_main" value="AI Capabilities & Detection"></div>
-                            <div class="grid-2">
-                                <div class="inner-box"><label>Left Image:</label><input type="file" name="ai_cap_img_1" accept="image/*" style="margin-bottom:6px;"><input type="text" name="ai_cap_h1" value="PAVEMENT DEFECTS" style="margin-bottom:6px; font-weight:700;"><textarea name="ai_cap_b1" rows="3">Cracks&#10;Raveling&#10;Potholes&#10;Manholes&#10;Garbage</textarea></div>
-                                <div class="inner-box"><label>Right Image:</label><input type="file" name="ai_cap_img_2" accept="image/*" style="margin-bottom:6px;"><input type="text" name="ai_cap_h2" value="ROAD FURNITURE" style="margin-bottom:6px; font-weight:700;"><textarea name="ai_cap_b2" rows="3">Signage&#10;Lane Marking&#10;Poles&#10;Crash Barriers&#10;Solar Blinkers</textarea></div>
-                            </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(8, 'AI Capabilities')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-9" class="slide-form-block">
-                            <div class="form-group"><label>Title:</label><input type="text" name="demo_main" value="Demo Video"></div>
-                            <div class="form-group"><label>Thumbnail Screen Image:</label><input type="file" name="demo_img_1" accept="image/*"></div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(9, 'Demo Video')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-10" class="slide-form-block">
-                            <div class="form-group"><label>Title:</label><input type="text" name="heat_map_main" value="Heat maps & Statistics in Dashboard"></div>
-                            <div class="form-group"><label>Full Dashboard Screenshot:</label><input type="file" name="heat_map_img_1" accept="image/*"></div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(10, 'Heat maps & Stats')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-11" class="slide-form-block">
-                            <div class="form-group"><label>Main Title:</label><input type="text" name="cloud_main" value="Cloud-Powered Dashboard: RoadAthena"></div>
-                            <div class="form-group"><label>Cloud Subtitle Bar:</label><input type="text" name="cloud_sub" value="All data is on the Cloud — Clients can access anytime, anywhere, on any device"></div>
-                            <div class="form-group"><label>Dashboard Center Image:</label><input type="file" name="cloud_img" accept="image/*"></div>
-                            <div class="grid-2">
+                        <div class="form-container">
+                            
+                            <div id="form-block-1" class="slide-form-block active">
                                 <div class="inner-box">
-                                    <label>Feature Blocks:</label>
-                                    <input type="text" name="cloud_f1" value="GIS Mapped Roads & Route View" style="margin-bottom:4px;">
-                                    <input type="text" name="cloud_f2" value="Graphs, Heat Maps & Pie Charts" style="margin-bottom:4px;">
-                                    <input type="text" name="cloud_f3" value="Pavement & Furniture Analysis" style="margin-bottom:4px;">
-                                    <input type="text" name="cloud_f4" value="Asset & Anomaly Detection" style="margin-bottom:4px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Upload Cover Background Image</label>
+                                        <input type="file" name="intro_img" accept="image/*">
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(1, 'Cover Intro')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-2" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="two-column">
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label>WHO WE ARE (Bullets)</label>
+                                            <textarea name="who_we_are" rows="3">AI-driven company transforming infrastructure using AI, GIS, and analytics.&#10;Focused on building smarter, more sustainable and efficient systems.</textarea>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label>OUR GOAL (Bullets)</label>
+                                            <textarea name="our_goals" rows="3">Develop AI-powered integrated infrastructure solutions for future smart cities.&#10;Deliver advanced AI-driven solutions for road safety, monitoring & maintenance globally.</textarea>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="inner-box">
-                                    <label>Footer Tags Metrics:</label>
-                                    <input type="text" name="cf1" value="Fast" style="margin-bottom:4px;">
-                                    <input type="text" name="cf2" value="Secure" style="margin-bottom:4px;">
-                                    <input type="text" name="cf3" value="Cloud-Native" style="margin-bottom:4px;">
-                                    <input type="text" name="cf4" value="Mobile-Ready" style="margin-bottom:4px;">
+                                    <label style="margin-bottom: 16px;">Key Statistics Highlights</label>
+                                    <div class="grid-2">
+                                        <div class="form-group" style="margin-bottom:0;"><input type="text" name="about_stat1" value="1,85,000+ Lane KMs Processed" placeholder="Stat 1"></div>
+                                        <div class="form-group" style="margin-bottom:0;"><input type="text" name="about_stat2" value="80,000+ Unique Roads Surveyed" placeholder="Stat 2"></div>
+                                        <div class="form-group" style="margin-bottom:0;"><input type="text" name="about_stat3" value="250+ AI Detection Classes" placeholder="Stat 3"></div>
+                                        <div class="form-group" style="margin-bottom:0;"><input type="text" name="about_stat4" value="20+ States Coverage" placeholder="Stat 4"></div>
+                                    </div>
                                 </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(2, 'About Us')">➕ Add Slide to My Deck</button>
                             </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(11, 'Cloud Dashboard')">➕ Add Slide to My Deck</button>
-                        </div>
 
-                        <div id="form-block-12" class="slide-form-block">
-                            <div class="two-column">
-                                <div class="form-group"><label>Main Title:</label><input type="text" name="action_main" value="HanuAI in ACTION"></div>
-                                <div class="form-group"><label>Subtitle:</label><input type="text" name="action_sub" value="Proven at scale across India and 3 countries globally"></div>
+                            <div id="form-block-3" class="slide-form-block">
+                                <div class="grid-2">
+                                    <div class="inner-box">
+                                        <label>Problem Area 1</label>
+                                        <input type="text" name="psh_1" value="Expensive, Time-Consuming & Manual Surveys" style="margin-bottom:12px; font-weight: 600;">
+                                        <textarea name="ds_1" rows="2">Manual road surveys are costly, slow, and manpower-intensive.</textarea>
+                                    </div>
+                                    <div class="inner-box">
+                                        <label>Problem Area 2</label>
+                                        <input type="text" name="psh_2" value="Poor Infrastructure & Accidents" style="margin-bottom:12px; font-weight: 600;">
+                                        <textarea name="ds_2" rows="2">Undetected road defects lead to accidents and economic losses.</textarea>
+                                    </div>
+                                    <div class="inner-box">
+                                        <label>Problem Area 3</label>
+                                        <input type="text" name="psh_3" value="Lack of Digitization" style="margin-bottom:12px; font-weight: 600;">
+                                        <textarea name="ds_3" rows="2">Road data remains siloed, limiting maintenance planning.</textarea>
+                                    </div>
+                                    <div class="inner-box">
+                                        <label>Problem Area 4</label>
+                                        <input type="text" name="psh_4" value="Rapid Environmental Changes" style="margin-bottom:12px; font-weight: 600;">
+                                        <textarea name="ds_4" rows="2">Climate change, traffic, and construction accelerate road damage.</textarea>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(3, 'Problem Statement')">➕ Add Slide to My Deck</button>
                             </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(12, 'Action Stats')">➕ Add Slide to My Deck</button>
-                        </div>
 
-                        <div id="form-block-13" class="slide-form-block">
-                            <div class="form-group"><label>Title Workflow Journey:</label><input type="text" name="work_main" value="HanuAI Workflow: From Survey to Insights"></div>
-                            <div class="grid-2">
-                                <div class="inner-box"><input type="text" name="work_h1" value="GIS Road Mapping"><input type="text" name="work_d1" value="GIS mapping of roads before survey" style="margin-top:4px;"></div>
-                                <div class="inner-box"><input type="text" name="work_h2" value="Data Capture Setup"><input type="text" name="work_d2" value="Multi-mode capture on vehicles" style="margin-top:4px;"></div>
-                                <div class="inner-box"><input type="text" name="work_h3" value="AI Data Processing"><input type="text" name="work_d3" value="Automated AI models run on cloud" style="margin-top:4px;"></div>
-                                <div class="inner-box"><input type="text" name="work_h4" value="Dashboard Delivery"><input type="text" name="work_d4" value="Final stats and heat maps ready for clients" style="margin-top:4px;"></div>
+                            <div id="form-block-4" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Main Slide Text Summary</label>
+                                        <textarea name="erp_main" rows="2">Complete Digital ERP Solution for Road Infrastructure with real-time monitoring and asset management.</textarea>
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box"><label>Upload Left Image</label><input type="file" name="erp_img_1" accept="image/*"></div>
+                                    <div class="inner-box"><label>Upload Right Image</label><input type="file" name="erp_img_2" accept="image/*"></div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(4, 'ERP Blueprint')">➕ Add Slide to My Deck</button>
                             </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(13, 'Workflow Journey')">➕ Add Slide to My Deck</button>
-                        </div>
 
-                        <div id="form-block-14" class="slide-form-block">
-                            <div class="form-group"><label>Partnership Heading:</label><textarea name="partner_main" rows="2">International Partnerships&#10;Worked & Future collaboration with Countries</textarea></div>
-                            <div class="form-group"><label>Globe Center Vector Image:</label><input type="file" name="partner_globe_img" accept="image/*"></div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(14, 'Global Partnerships')">➕ Add Slide to My Deck</button>
-                        </div>
-
-                        <div id="form-block-15" class="slide-form-block">
-                            <div class="form-group"><label>Main Header:</label><input type="text" name="proj_main" value="Projects Delivered"></div>
-                            <div class="grid-2">
-                                <div class="inner-box"><input type="text" name="proj_h1" value="Indonesia" style="font-weight:700;"><textarea name="proj_d1" rows="1" style="margin-top:4px;">4,80,000 km completed in just 14 months</textarea></div>
-                                <div class="inner-box"><input type="text" name="proj_h2" value="NHAI, India" style="font-weight:700;"><textarea name="proj_d2" rows="1" style="margin-top:4px;">81,250 km of National Highways covered</textarea></div>
-                                <div class="inner-box"><input type="text" name="proj_h3" value="State Govts. (5 states)" style="font-weight:700;"><textarea name="proj_d3" rows="1" style="margin-top:4px;">5,000 km in 6 months across multiple states</textarea></div>
-                                <div class="inner-box"><input type="text" name="proj_h4" value="Gurugram & Manesar" style="font-weight:700;"><textarea name="proj_d4" rows="1" style="margin-top:4px;">2,000+ km completed in under 2 months</textarea></div>
+                            <div id="form-block-5" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Main Context Layout Title</label>
+                                        <input type="text" name="sol_main" value="Our devices can be mounted on any vehicle- 2-wheelers, 4-wheelers & more" style="font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box"><input type="text" name="solh_1" value="Fast & Reliable" style="margin-bottom:10px; font-weight:700;"><textarea name="sold_1" rows="2">AI-powered data capture at survey speed with 99%+ uptime reliability</textarea></div>
+                                    <div class="inner-box"><input type="text" name="solh_2" value="Cloud-Powered" style="margin-bottom:10px; font-weight:700;"><textarea name="sold_2" rows="2">All data stored securely on cloud — clients access anytime, anywhere</textarea></div>
+                                    <div class="inner-box"><input type="text" name="solh_3" value="Scalable" style="margin-bottom:10px; font-weight:700;"><textarea name="sold_3" rows="2">From city roads to national highways — scales to any network size</textarea></div>
+                                    <div class="inner-box"><input type="text" name="solh_4" value="Efficient" style="margin-bottom:10px; font-weight:700;"><textarea name="sold_4" rows="2">End-to-end automated AI models reduce manual effort by 80%+</textarea></div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(5, 'Our Solution')">➕ Add Slide to My Deck</button>
                             </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(15, 'Projects Delivered')">➕ Add Slide to My Deck</button>
-                        </div>
 
-                        <div id="form-block-16" class="slide-form-block">
-                            <div class="form-group"><label>Main Title Strategy:</label><input type="text" name="us_main" value="U.S. Market Entry Strategy"></div>
-                            <div class="grid-2">
-                                <textarea name="us_b1" rows="1">Focus on high road-density states</textarea>
-                                <textarea name="us_b2" rows="1">Entry via pilot projects</textarea>
-                                <textarea name="us_b3" rows="1">Target: State DOTs, municipalities</textarea>
-                                <textarea name="us_b4" rows="1">Engage infrastructure investors</textarea>
+                            <div id="form-block-6" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Main Module Title</label>
+                                        <input type="text" name="sol_used_main" value="Solution Used by Clients" style="font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box"><input type="text" name="suh_1" value="Road Asset & Defect Detection" style="font-weight:600;"><textarea name="sud_1" rows="2" style="margin-top:8px;">AI detects 250+ classes of road defects and furniture</textarea></div>
+                                    <div class="inner-box"><input type="text" name="suh_2" value="Stats & Dashboard" style="font-weight:600;"><textarea name="sud_2" rows="2" style="margin-top:8px;">Real-time statistics and GIS-mapped road analytics</textarea></div>
+                                    <div class="inner-box"><input type="text" name="suh_3" value="Pre & Post Analysis" style="font-weight:600;"><textarea name="sud_3" rows="2" style="margin-top:8px;">Before/after comparisons for maintenance validation</textarea></div>
+                                    <div class="inner-box"><input type="text" name="suh_4" value="Maintenance History" style="font-weight:600;"><textarea name="sud_4" rows="2" style="margin-top:8px;">Complete maintenance audit trail and scheduling</textarea></div>
+                                    <div class="inner-box"><input type="text" name="suh_5" value="Overlap Detection" style="font-weight:600;"><textarea name="sud_5" rows="2" style="margin-top:8px;">Smart road segmentation and asset registration</textarea></div>
+                                    <div class="inner-box"><input type="text" name="suh_6" value="Road Safety Analysis" style="font-weight:600;"><textarea name="sud_6" rows="2" style="margin-top:8px;">Safety audits for highways, rural and urban roads</textarea></div>
+                                    <div class="inner-box"><input type="text" name="suh_7" value="DLP Audits & Objective Rating" style="font-weight:600;"><textarea name="sud_7" rows="2" style="margin-top:8px;">Objective road condition rating and defect liability audits</textarea></div>
+                                    <div class="inner-box"><input type="text" name="suh_8" value="DPR Preparation" style="font-weight:600;"><textarea name="sud_8" rows="2" style="margin-top:8px;">Automated Detailed Project Report generation</textarea></div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(6, 'Solutions Used')">➕ Add Slide to My Deck</button>
                             </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(16, 'U.S Market Strategy')">➕ Add Slide to My Deck</button>
-                        </div>
 
-                        <div id="form-block-17" class="slide-form-block">
-                            <div class="form-group"><label>Main Title Accolades:</label><input type="text" name="recog_main" value="Recognition & Awards"></div>
-                            <div class="grid-2">
-                                <div class="inner-box"><input type="text" name="recog_h1" value="NASSCOM Emerge 50" style="font-weight:700;"><input type="text" name="recog_d1" value="National Winners" style="margin-top:4px;"></div>
-                                <div class="inner-box"><input type="text" name="recog_h2" value="Leap to Unicorn" style="font-weight:700;"><input type="text" name="recog_d2" value="Top 100 Startups" style="margin-top:4px;"></div>
-                                <div class="inner-box"><input type="text" name="recog_h3" value="Award Title 3" style="font-weight:700;"><input type="text" name="recog_d3" value="Award Details 3" style="margin-top:4px;"></div>
-                                <div class="inner-box"><input type="text" name="recog_h4" value="Award Title 4" style="font-weight:700;"><input type="text" name="recog_d4" value="Award Details 4" style="margin-top:4px;"></div>
+                            <div id="form-block-7" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Header Title</label>
+                                        <input type="text" name="pre_post_main" value="Pre and Post Analysis" style="font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box"><label>Image 1 (Pre)</label><input type="file" name="pre_post_img_1" accept="image/*"></div>
+                                    <div class="inner-box"><label>Image 2 (Post)</label><input type="file" name="pre_post_img_2" accept="image/*"></div>
+                                    <div class="inner-box"><label>Image 3 (Pre)</label><input type="file" name="pre_post_img_3" accept="image/*"></div>
+                                    <div class="inner-box"><label>Image 4 (Post)</label><input type="file" name="pre_post_img_4" accept="image/*"></div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(7, 'Pre & Post Analysis')">➕ Add Slide to My Deck</button>
                             </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(17, 'Awards & Recog')">➕ Add Slide to My Deck</button>
-                        </div>
 
-                        <div id="form-block-18" class="slide-form-block">
-                            <div class="form-group"><label>Leadership Section Header:</label><input type="text" name="team_main" value="Core Team"></div>
-                            <div class="grid-2">
+                            <div id="form-block-8" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Header Title</label>
+                                        <input type="text" name="ai_cap_main" value="AI Capabilities & Detection" style="font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box">
+                                        <label>Category 1: Left Group</label>
+                                        <input type="text" name="ai_cap_h1" value="PAVEMENT DEFECTS" style="margin-bottom:12px; font-weight:700;">
+                                        <textarea name="ai_cap_b1" rows="4" style="margin-bottom:12px;">Cracks&#10;Raveling&#10;Potholes&#10;Manholes&#10;Garbage</textarea>
+                                        <input type="file" name="ai_cap_img_1" accept="image/*">
+                                    </div>
+                                    <div class="inner-box">
+                                        <label>Category 2: Right Group</label>
+                                        <input type="text" name="ai_cap_h2" value="ROAD FURNITURE" style="margin-bottom:12px; font-weight:700;">
+                                        <textarea name="ai_cap_b2" rows="4" style="margin-bottom:12px;">Signage&#10;Lane Marking&#10;Poles&#10;Crash Barriers&#10;Solar Blinkers</textarea>
+                                        <input type="file" name="ai_cap_img_2" accept="image/*">
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(8, 'AI Capabilities')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-9" class="slide-form-block">
                                 <div class="inner-box">
-                                    <label style="font-size:11px;">Member 1 Photo:</label><input type="file" name="team_img_1" accept="image/*" style="margin-bottom:6px;">
-                                    <input type="text" name="team_name_1" value="Prerna Kalra" style="width:48%; display:inline-block; font-weight:700;">
-                                    <input type="text" name="team_role_1" value="Co-founder & CEO" style="width:48%; display:inline-block;">
-                                    <textarea name="team_desc_1" rows="2" style="margin-top:6px;">27+ years in IT & enterprise leadership</textarea>
+                                    <div class="form-group">
+                                        <label>Video Slide Title</label>
+                                        <input type="text" name="demo_main" value="Demo Video" style="font-weight: 600;">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Thumbnail / Screen Image</label>
+                                        <input type="file" name="demo_img_1" accept="image/*">
+                                    </div>
                                 </div>
-                                <div class="inner-box">
-                                    <label style="font-size:11px;">Member 2 Photo:</label><input type="file" name="team_img_2" accept="image/*" style="margin-bottom:6px;">
-                                    <input type="text" name="team_name_2" value="Manav Singal" style="width:48%; display:inline-block; font-weight:700;">
-                                    <input type="text" name="team_role_2" value="Co-founder & CTO" style="width:48%; display:inline-block;">
-                                    <textarea name="team_desc_2" rows="2" style="margin-top:6px;">27+ years in IT; 19+ years at Infosys</textarea>
-                                </div>
-                                <div class="inner-box">
-                                    <label style="font-size:11px;">Member 3 Photo:</label><input type="file" name="team_img_3" accept="image/*" style="margin-bottom:6px;">
-                                    <input type="text" name="team_name_3" value="Team Member 3" style="width:48%; display:inline-block; font-weight:700;">
-                                    <input type="text" name="team_role_3" value="Designation" style="width:48%; display:inline-block;">
-                                    <textarea name="team_desc_3" rows="2" style="margin-top:6px;">Description goes here</textarea>
-                                </div>
-                                <div class="inner-box">
-                                    <label style="font-size:11px;">Member 4 Photo:</label><input type="file" name="team_img_4" accept="image/*" style="margin-bottom:6px;">
-                                    <input type="text" name="team_name_4" value="Team Member 4" style="width:48%; display:inline-block; font-weight:700;">
-                                    <input type="text" name="team_role_4" value="Designation" style="width:48%; display:inline-block;">
-                                    <textarea name="team_desc_4" rows="2" style="margin-top:6px;">Description goes here</textarea>
-                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(9, 'Demo Video')">➕ Add Slide to My Deck</button>
                             </div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(18, 'Core Leadership')">➕ Add Slide to My Deck</button>
-                        </div>
 
-                        <div id="form-block-19" class="slide-form-block">
-                            <div class="form-group"><label>Main Title:</label><input type="text" name="thank_main" value="Thank You" style="font-weight: bold;"></div>
-                            <div class="form-group"><label>Subtitle:</label><input type="text" name="thank_sub" value="A Made-in-India solution delivering impact in India and across the world"></div>
-                            <div class="form-group"><label>Contact Person Email:</label><input type="text" name="email_1" value="rahul@hanu.ai"></div>
-                            <div class="form-group"><label>Footer / Copyright Text:</label><input type="text" name="thank_copy" value="© HanuAI Private Limited"></div>
-                            <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(19, 'Thank You & Contact')">➕ Add Slide to My Deck</button>
-                        </div>
+                            <div id="form-block-10" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label>Dashboard Slide Title</label>
+                                        <input type="text" name="heat_map_main" value="Heat maps & Statistics in Dashboard" style="font-weight: 600;">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Full Dashboard Screenshot</label>
+                                        <input type="file" name="heat_map_img_1" accept="image/*">
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(10, 'Heat maps & Stats')">➕ Add Slide to My Deck</button>
+                            </div>
 
+                            <div id="form-block-11" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="two-column">
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label>Main Title</label>
+                                            <input type="text" name="cloud_main" value="Cloud-Powered Dashboard: RoadAthena" style="font-weight: 600;">
+                                        </div>
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label>Subtitle Bar</label>
+                                            <input type="text" name="cloud_sub" value="All data is on the Cloud — Clients can access anytime, anywhere, on any device">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Dashboard Center Image</label>
+                                        <input type="file" name="cloud_img" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box">
+                                        <label style="margin-bottom:12px;">Feature Blocks List</label>
+                                        <input type="text" name="cloud_f1" value="GIS Mapped Roads & Route View" style="margin-bottom:10px;">
+                                        <input type="text" name="cloud_f2" value="Graphs, Heat Maps & Pie Charts" style="margin-bottom:10px;">
+                                        <input type="text" name="cloud_f3" value="Pavement & Furniture Analysis" style="margin-bottom:10px;">
+                                        <input type="text" name="cloud_f4" value="Asset & Anomaly Detection">
+                                    </div>
+                                    <div class="inner-box">
+                                        <label style="margin-bottom:12px;">Footer Tags Metrics</label>
+                                        <input type="text" name="cf1" value="Fast" style="margin-bottom:10px;">
+                                        <input type="text" name="cf2" value="Secure" style="margin-bottom:10px;">
+                                        <input type="text" name="cf3" value="Cloud-Native" style="margin-bottom:10px;">
+                                        <input type="text" name="cf4" value="Mobile-Ready">
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(11, 'Cloud Dashboard')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-12" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="two-column">
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label>Main Title</label>
+                                            <input type="text" name="action_main" value="HanuAI in ACTION" style="font-weight: 600;">
+                                        </div>
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label>Subtitle</label>
+                                            <input type="text" name="action_sub" value="Proven at scale across India and 3 countries globally">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(12, 'Action Stats')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-13" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Workflow Journey Title</label>
+                                        <input type="text" name="work_main" value="HanuAI Workflow: From Survey to Insights" style="font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box"><input type="text" name="work_h1" value="GIS Road Mapping" style="font-weight:600;"><input type="text" name="work_d1" value="GIS mapping of roads before survey" style="margin-top:8px;"></div>
+                                    <div class="inner-box"><input type="text" name="work_h2" value="Data Capture Setup" style="font-weight:600;"><input type="text" name="work_d2" value="Multi-mode capture on vehicles" style="margin-top:8px;"></div>
+                                    <div class="inner-box"><input type="text" name="work_h3" value="AI Data Processing" style="font-weight:600;"><input type="text" name="work_d3" value="Automated AI models run on cloud" style="margin-top:8px;"></div>
+                                    <div class="inner-box"><input type="text" name="work_h4" value="Dashboard Delivery" style="font-weight:600;"><input type="text" name="work_d4" value="Final stats and heat maps ready for clients" style="margin-top:8px;"></div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(13, 'Workflow Journey')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-14" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label>Partnership Heading</label>
+                                        <textarea name="partner_main" rows="2" style="font-weight: 600;">International Partnerships&#10;Worked & Future collaboration with Countries</textarea>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Globe Center Vector Image</label>
+                                        <input type="file" name="partner_globe_img" accept="image/*">
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(14, 'Global Partnerships')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-15" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Main Header</label>
+                                        <input type="text" name="proj_main" value="Projects Delivered" style="font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box"><input type="text" name="proj_h1" value="Indonesia" style="font-weight:700;"><textarea name="proj_d1" rows="2" style="margin-top:8px;">4,80,000 km completed in just 14 months</textarea></div>
+                                    <div class="inner-box"><input type="text" name="proj_h2" value="NHAI, India" style="font-weight:700;"><textarea name="proj_d2" rows="2" style="margin-top:8px;">81,250 km of National Highways covered</textarea></div>
+                                    <div class="inner-box"><input type="text" name="proj_h3" value="State Govts. (5 states)" style="font-weight:700;"><textarea name="proj_d3" rows="2" style="margin-top:8px;">5,000 km in 6 months across multiple states</textarea></div>
+                                    <div class="inner-box"><input type="text" name="proj_h4" value="Gurugram & Manesar" style="font-weight:700;"><textarea name="proj_d4" rows="2" style="margin-top:8px;">2,000+ km completed in under 2 months</textarea></div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(15, 'Projects Delivered')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-16" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Strategy Main Title</label>
+                                        <input type="text" name="us_main" value="U.S. Market Entry Strategy" style="font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="inner-box">
+                                    <label style="margin-bottom:16px;">Strategic Focus Points</label>
+                                    <div class="grid-2">
+                                        <textarea name="us_b1" rows="2">Focus on high road-density states</textarea>
+                                        <textarea name="us_b2" rows="2">Entry via pilot projects</textarea>
+                                        <textarea name="us_b3" rows="2">Target: State DOTs, municipalities</textarea>
+                                        <textarea name="us_b4" rows="2">Engage infrastructure investors</textarea>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(16, 'U.S Market Strategy')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-17" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Accolades Main Title</label>
+                                        <input type="text" name="recog_main" value="Recognition & Awards" style="font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box"><input type="text" name="recog_h1" value="NASSCOM Emerge 50" style="font-weight:700;"><input type="text" name="recog_d1" value="National Winners" style="margin-top:8px;"></div>
+                                    <div class="inner-box"><input type="text" name="recog_h2" value="Leap to Unicorn" style="font-weight:700;"><input type="text" name="recog_d2" value="Top 100 Startups" style="margin-top:8px;"></div>
+                                    <div class="inner-box"><input type="text" name="recog_h3" value="Award Title 3" style="font-weight:700;"><input type="text" name="recog_d3" value="Award Details 3" style="margin-top:8px;"></div>
+                                    <div class="inner-box"><input type="text" name="recog_h4" value="Award Title 4" style="font-weight:700;"><input type="text" name="recog_d4" value="Award Details 4" style="margin-top:8px;"></div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(17, 'Awards & Recog')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-18" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Leadership Section Header</label>
+                                        <input type="text" name="team_main" value="Core Team" style="font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="inner-box">
+                                        <label>Member 1 Profile</label>
+                                        <input type="file" name="team_img_1" accept="image/*" style="margin-bottom:12px;">
+                                        <div style="display:flex; gap:10px;">
+                                            <input type="text" name="team_name_1" value="Prerna Kalra" style="font-weight:700;">
+                                            <input type="text" name="team_role_1" value="Co-founder & CEO">
+                                        </div>
+                                        <textarea name="team_desc_1" rows="2" style="margin-top:12px;">27+ years in IT & enterprise leadership</textarea>
+                                    </div>
+                                    <div class="inner-box">
+                                        <label>Member 2 Profile</label>
+                                        <input type="file" name="team_img_2" accept="image/*" style="margin-bottom:12px;">
+                                        <div style="display:flex; gap:10px;">
+                                            <input type="text" name="team_name_2" value="Manav Singal" style="font-weight:700;">
+                                            <input type="text" name="team_role_2" value="Co-founder & CTO">
+                                        </div>
+                                        <textarea name="team_desc_2" rows="2" style="margin-top:12px;">27+ years in IT; 19+ years at Infosys</textarea>
+                                    </div>
+                                    <div class="inner-box">
+                                        <label>Member 3 Profile</label>
+                                        <input type="file" name="team_img_3" accept="image/*" style="margin-bottom:12px;">
+                                        <div style="display:flex; gap:10px;">
+                                            <input type="text" name="team_name_3" value="Team Member 3" style="font-weight:700;">
+                                            <input type="text" name="team_role_3" value="Designation">
+                                        </div>
+                                        <textarea name="team_desc_3" rows="2" style="margin-top:12px;">Description goes here</textarea>
+                                    </div>
+                                    <div class="inner-box">
+                                        <label>Member 4 Profile</label>
+                                        <input type="file" name="team_img_4" accept="image/*" style="margin-bottom:12px;">
+                                        <div style="display:flex; gap:10px;">
+                                            <input type="text" name="team_name_4" value="Team Member 4" style="font-weight:700;">
+                                            <input type="text" name="team_role_4" value="Designation">
+                                        </div>
+                                        <textarea name="team_desc_4" rows="2" style="margin-top:12px;">Description goes here</textarea>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(18, 'Core Leadership')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-19" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label>Main Title</label>
+                                        <input type="text" name="thank_main" value="Thank You" style="font-weight: 700;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Subtitle / Tagline</label>
+                                        <input type="text" name="thank_sub" value="A Made-in-India solution delivering impact in India and across the world">
+                                    </div>
+                                    <div class="two-column">
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label>Contact Person Email</label>
+                                            <input type="text" name="email_1" value="rahul@hanu.ai">
+                                        </div>
+                                        <div class="form-group" style="margin-bottom:0;">
+                                            <label>Footer / Copyright Text</label>
+                                            <input type="text" name="thank_copy" value="© HanuAI Private Limited">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(19, 'Thank You & Contact')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -416,7 +603,7 @@
             const selectedBlock = document.getElementById(`form-block-${slideId}`);
             if (selectedBlock) selectedBlock.classList.add('active');
             
-            document.getElementById('current-slide-title').innerText = `Slide ${slideId} Workspace`;
+            document.getElementById('current-slide-title').innerText = `Editing Slide ${slideId} Configuration`;
             document.getElementById('layout-preview-img').src = `/static/preview/slide${slideId}.png`;
         }
 
@@ -475,7 +662,7 @@
                 
                 div.innerHTML = `
                     <div class="deck-item-info">
-                        <span class="drag-handle" title="Drag to reorder">⠿</span>
+                        <span class="drag-handle" title="Drag to reorder"></span>
                         ${index + 1}. ${item.title}
                     </div>
                     <button type="button" class="control-btn delete" onclick="deleteFromDeck('${item.uniqueId}')">✕</button>

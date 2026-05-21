@@ -1,9 +1,12 @@
 import os
-import tempfile
+import io
+import logging
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
 from .utils import generate_pptx
+
+logger = logging.getLogger(__name__)
 
 # Template ka path nikalne ka safe tareeka
 def _get_template_path():
@@ -22,30 +25,23 @@ def generate_ppt(request):
     if not os.path.exists(template_path):
         return HttpResponse(f"Template file not found at: {template_path}. Please check your folder structure.", status=500)
 
-    output_path = None
     try:
-        # Ek temporary file banayenge jisme final PPT save hogi
-        with tempfile.NamedTemporaryFile(suffix=".pptx", delete=False) as tmp:
-            output_path = tmp.name
+        # Create an in-memory buffer to save the presentation without using the disk
+        buffer = io.BytesIO()
 
-        # YAHAN CHANGE KIYA HAI: {} ki jagah request.FILES pass kiya hai
-        generate_pptx(request.POST, request.FILES, {}, template_path, output_path)
+        # Generate PPT and save it directly into the memory buffer
+        generate_pptx(request.POST, request.FILES, {}, template_path, buffer)
 
-        # File ko read karke user ko download ke liye bhej do
-        with open(output_path, "rb") as f:
-            data = f.read()
+        # Reset buffer position to the beginning before reading
+        buffer.seek(0)
 
         response = HttpResponse(
-            data,
+            buffer,
             content_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
         )
         response["Content-Disposition"] = 'attachment; filename="single_page_presentation.pptx"'
         return response
 
     except Exception as e:
+        logger.error("Error generating PPT", exc_info=True)
         return HttpResponse(f"An error occurred: {str(e)}", status=500)
-
-    finally:
-        # Server se temporary file delete kar do taaki kachra jama na ho
-        if output_path and os.path.exists(output_path):
-            os.unlink(output_path)

@@ -119,31 +119,34 @@ def clone_slide_to_presentation(source_prs, slide_index, target_prs):
 def hex_to_rgb(value):
     value = value.lstrip('#')
     return tuple(int(value[i:i+2], 16) for i in (0, 2, 4))
-
 # --- HELPER 7: APPLY THEME COLOR (FIXED FOR ALL SHAPES) ---
-def apply_theme_color(shape, hex_color):
-    print(f"DEBUG: Checking shape: {shape.name}")
+# --- HELPER 7: APPLY THEME COLOR (FOOLPROOF NAME CHECK) ---
+def apply_theme_color(shape, hex_color, force_color=False):
     try:
-        # Check if shape is a group (PPT ke dabbe kayi baar group hote hain)
-        if hasattr(shape, "shapes"):
-            for s in shape.shapes:
-                apply_theme_color(s, hex_color)
-                
-        # Alt Text ya Name check
-        alt_text = ""
-        if hasattr(shape, "_element") and hasattr(shape._element, "nvSpPr"):
-            alt_text = shape._element.nvSpPr.cNvPr.attrib.get('descr', '').lower()
+        is_target = force_color
         
-        name_text = shape.name.lower() if hasattr(shape, "name") else ""
-        
-        if 'theme_accent' in alt_text or 'theme_accent' in name_text:
+        # 1. Check if shape name has our tag
+        if hasattr(shape, "name") and "theme_accent" in shape.name.lower():
+            print(f"✅ DEBUG: Mil gaya target shape -> {shape.name}")
+            is_target = True
+
+        # 2. Fill the color if it's a target
+        if is_target and hasattr(shape, "fill"):
             rgb = hex_to_rgb(hex_color)
-            if shape.fill:
+            try:
                 shape.fill.solid()
                 shape.fill.fore_color.rgb = RGBColor(rgb[0], rgb[1], rgb[2])
+                print(f"🎨 DEBUG: Color {hex_color} applied successfully to -> {shape.name}")
+            except Exception as inner_e:
+                print(f"❌ DEBUG: Rang bharne mein issue aaya {shape.name} par: {inner_e}")
+                
+        # 3. 🚨 SABSE BADA FIX: Agar dabba Grouped hai, toh uske ANDAR ghuso!
+        if hasattr(shape, "shapes"):
+            for s in shape.shapes:
+                # Agar main group 'theme_accent' hai, toh uske bacchon (child shapes) ko force_color=True bhejo
+                apply_theme_color(s, hex_color, force_color=is_target)
     except Exception as e:
-        print(f"DEBUG: Color error in shape {shape.name}: {e}")
-
+        pass
 # ==========================================
 # MAIN GENERATOR FUNCTION
 # ==========================================
