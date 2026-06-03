@@ -7,6 +7,8 @@ from pptx.text.text import _Paragraph
 from pptx.enum.text import MSO_ANCHOR
 from pptx.util import Pt
 from pptx.dml.color import RGBColor
+from pptx.oxml import parse_xml
+from pptx.oxml.ns import qn
 
 # --- HELPER 1: Get All Text ---
 def get_all_text(shape):
@@ -119,32 +121,53 @@ def clone_slide_to_presentation(source_prs, slide_index, target_prs):
 def hex_to_rgb(value):
     value = value.lstrip('#')
     return tuple(int(value[i:i+2], 16) for i in (0, 2, 4))
-# --- HELPER 7: APPLY THEME COLOR (FIXED FOR ALL SHAPES) ---
-# --- HELPER 7: APPLY THEME COLOR (FOOLPROOF NAME CHECK) ---
-def apply_theme_color(shape, hex_color, force_color=False):
-    try:
-        is_target = force_color
-        
-        # 1. Check if shape name has our tag
-        if hasattr(shape, "name") and "theme_accent" in shape.name.lower():
-            print(f"✅ DEBUG: Mil gaya target shape -> {shape.name}")
-            is_target = True
 
-        # 2. Fill the color if it's a target
-        if is_target and hasattr(shape, "fill"):
-            rgb = hex_to_rgb(hex_color)
-            try:
-                shape.fill.solid()
-                shape.fill.fore_color.rgb = RGBColor(rgb[0], rgb[1], rgb[2])
-                print(f"🎨 DEBUG: Color {hex_color} applied successfully to -> {shape.name}")
-            except Exception as inner_e:
-                print(f"❌ DEBUG: Rang bharne mein issue aaya {shape.name} par: {inner_e}")
+# --- HELPER 7: THE ULTIMATE XML COLOR HACK ---
+# --- HELPER 7: THE ULTIMATE XML COLOR HACK (Updated for Shape 2 & Shape 4) ---
+def apply_theme_color(shape, hex_color, force_child=False):
+    try:
+        is_target = force_child
+        
+        # 1. Target dhundo (Naam se: Shape 2, Shape 4, ya theme_accent)
+        if hasattr(shape, "name"):
+            s_name = shape.name.lower()
+            # Yahan humne naye naam add kar diye hain
+            if "theme_accent" in s_name or "shape 2" in s_name or "shape 4" in s_name:
+                is_target = True
                 
-        # 3. 🚨 SABSE BADA FIX: Agar dabba Grouped hai, toh uske ANDAR ghuso!
+        try:
+            if hasattr(shape, "_element") and hasattr(shape._element, "nvSpPr"):
+                desc = shape._element.nvSpPr.cNvPr.attrib.get('descr', '').lower()
+                if "theme_accent" in desc or "shape 2" in desc or "shape 4" in desc:
+                    is_target = True
+        except: pass
+
+        # 2. RAW XML SURGERY (Yahan asli hack hai)
+        if is_target:
+            clean_hex = hex_color.lstrip('#').upper()
+            try:
+                # Shape ka main code block (spPr) nikaalo
+                spPr = shape._element.find(qn('p:spPr'))
+                if spPr is not None:
+                    # a) Purane saare colors aur gradients ko delete maaro
+                    for fill_type in ['a:solidFill', 'a:gradFill', 'a:pattFill', 'a:blipFill', 'a:noFill']:
+                        old_fill = spPr.find(qn(fill_type))
+                        if old_fill is not None:
+                            spPr.remove(old_fill)
+                    
+                    # b) Apna naya solid color XML mein inject karo
+                    xml_string = f'<a:solidFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:srgbClr val="{clean_hex}"/></a:solidFill>'
+                    new_fill = parse_xml(xml_string)
+                    spPr.append(new_fill)
+                    print(f"🔥 XML HACK SUCCESS on: {shape.name}")
+            except Exception as xml_e:
+                print(f"XML Error on {shape.name}: {xml_e}")
+
+        # 3. Agar Grouped Shape hai, toh uske har bacche (child shape) mein ghus kar rang badlo
         if hasattr(shape, "shapes"):
-            for s in shape.shapes:
-                # Agar main group 'theme_accent' hai, toh uske bacchon (child shapes) ko force_color=True bhejo
-                apply_theme_color(s, hex_color, force_color=is_target)
+            for child_shape in shape.shapes:
+                apply_theme_color(child_shape, hex_color, force_child=is_target)
+                
     except Exception as e:
         pass
 # ==========================================
