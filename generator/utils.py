@@ -212,7 +212,9 @@ def generate_pptx(form_data, uploaded_images, uploaded_videos, template_path, ou
         "[us_main]": form_data.get("us_main", ""), "[recog_main]": form_data.get("recog_main", ""),
         "[team_main]": form_data.get("team_main", ""), "[thank_main]": form_data.get("thank_main", ""),
         "[thank_sub]": form_data.get("thank_sub", ""), "[thank_copy]": form_data.get("thank_copy", ""),
-        "[email_1]": form_data.get("email_1", "")
+        "[email_1]": form_data.get("email_1", ""),
+        "[Main_heading_intro2]": form_data.get("main_heading_intro2", ""),
+        "[Sub_heading_intro2]": form_data.get("sub_heading_intro2", "")
     }
 
     for i in range(1, 5): 
@@ -284,7 +286,6 @@ def generate_pptx(form_data, uploaded_images, uploaded_videos, template_path, ou
                             shape._element.getparent().remove(shape._element)
                             os.unlink(tmp_p)
 
-    # File crash prevention: Agar zero slides hain, toh bas ek khali slide add kardo taaki PPT khul sake
     if len(prs_target.slides) == 0:
         try: prs_target.slides.add_slide(prs_target.slide_layouts[6])
         except: prs_target.slides.add_slide(prs_target.slide_layouts[0])

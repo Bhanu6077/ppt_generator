@@ -173,6 +173,7 @@
                     <button type="button" class="gallery-item" onclick="loadWorkspace(17)">Slide 17: Awards & Recog</button>
                     <button type="button" class="gallery-item" onclick="loadWorkspace(18)">Slide 18: Core Leadership</button>
                     <button type="button" class="gallery-item" onclick="loadWorkspace(19)">Slide 19: Thank You & Contact</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(20)">Slide 20: 2nd Intro Slide</button>
                 </div>
             </div>
 
@@ -576,12 +577,22 @@
                                 <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(19, 'Thank You & Contact')">➕ Add Slide to My Deck</button>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
+                         <div id="form-block-20" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label for="main_heading_intro2">Main Heading (Blue Text)</label>
+                                        <input type="text" id="main_heading_intro2" name="main_heading_intro2" value="Smarter Roads, Safer Journeys">
+                                    </div>
+                                
+                                    <div class="form-group" style="margin-top: 16px;">
+                                        <label for="sub_heading_intro2">Sub Heading (Black Text)</label>
+                                        <textarea id="sub_heading_intro2" name="sub_heading_intro2" rows="3">Automated AI-Enabled Road Asset Monitoring, Management and Road Safety System</textarea>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(20, '2nd Intro Slide')">➕ Add Slide to My Deck</button>
+                            </div>
 
-            <div class="deck-sidebar">
+                        </div> </div> </div> </div> <div class="deck-sidebar">
                 <div class="deck-header">
                     <h3>My Live Presentation Deck</h3>
                 </div>
@@ -604,6 +615,9 @@
             if (selectedBlock) selectedBlock.classList.add('active');
             
             document.getElementById('current-slide-title').innerText = `Editing Slide ${slideId} Configuration`;
+            
+            // Note: If you don't have an image for slide 20 yet, this might show a broken image icon. 
+            // That's normal until you add a preview image for slide 20 in your static folder.
             document.getElementById('layout-preview-img').src = `/static/preview/slide${slideId}.png`;
         }
 
