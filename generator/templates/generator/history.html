@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Presentation History | Road Athena</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --bg-body: #f1f5f9;
+            --bg-surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-light: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg-body); color: var(--text-dark); padding: 40px; }
+        
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        .header-box { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h2 { font-size: 24px; font-weight: 700; }
+        
+        .back-btn { padding: 10px 20px; background: var(--text-dark); color: white; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; }
+        
+        table { width: 100%; border-collapse: collapse; background: var(--bg-surface); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        th { background: #f8fafc; text-align: left; padding: 16px; font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-light); }
+        td { padding: 16px; border-bottom: 1px solid var(--border-light); font-size: 14px; font-weight: 500; }
+        
+        .btn-action { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; text-decoration: none; transition: 0.2s; }
+        .btn-download { background: #ecfdf5; color: #059669; border: 1px solid #d1fae5; }
+        .btn-download:hover { background: #059669; color: white; }
+        .btn-edit { background: #eff6ff; color: var(--primary); border: 1px solid #dbeafe; }
+        .btn-edit:hover { background: var(--primary); color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-box">
+            <h2>📜 Presentation History</h2>
+            <a href="/" class="back-btn">← Back to Builder</a>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Presentation Name</th>
+                    <th>Generation Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in history %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.created_at|date:"d M Y, H:i" }}</td>
+                    <td>
+                        <a href="{% url 'download' item.id %}" class="btn-action btn-download">Download</a>
+                        <a href="{% url 'edit' item.id %}" class="btn-action btn-edit">Edit Deck</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

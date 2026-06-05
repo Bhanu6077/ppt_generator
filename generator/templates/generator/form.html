@@ -38,7 +38,6 @@
         
         .brand-header { padding: 25px 20px; background: linear-gradient(135deg, #1e293b, #0f172a); color: white; text-align: left; }
         .brand-header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
-        .brand-header h1::before { content: "⚡"; font-size: 22px; }
         .brand-header p { font-size: 12px; color: #94a3b8; margin-top: 6px; font-weight: 500; }
         
         .theme-picker-box { padding: 18px 20px; border-bottom: 1px solid var(--border-light); background: #f8fafc; }
@@ -134,22 +133,38 @@
 <body>
 
     <div class="app-workspace">
-        <form id="master-ppt-form" method="POST" enctype="multipart/form-data" style="display: contents;">
+       <form id="master-ppt-form" action="{% url 'generate_ppt' %}" method="POST" enctype="multipart/form-data" style="display: contents;">
             {% csrf_token %}
             <input type="hidden" name="slide_order_json" id="slide_order_json" value="[]">
-
+            <input type="hidden" name="history_id" id="history_id" value="{% if payload_id %}{{ payload_id }}{% endif %}">
+            <input type="hidden" name="save_only" id="save-only-field" value="false">
+            <input type="hidden" id="original-ppt-name" value="{{ original_name|default:'' }}">
             <div class="template-gallery">
                 <div class="brand-header">
                     <h1>Road Athena</h1>
                     <p>Dynamic Core Deck Customizer</p>
+                    <a href="{% url 'history' %}" style="display: block; margin-top: 10px; color: yellow;">📋 View History</a>
                 </div>
                 
-                <div class="theme-picker-box">
+<div class="theme-picker-box">
                     <label>Master Brand Theme</label>
-                    <div class="theme-picker-flex">
+                    <div class="theme-picker-flex" style="margin-bottom: 15px;">
                         <input type="color" name="theme_color" value="#0056b3">
                         <span style="font-size: 13px; color: var(--text-dark); font-weight: 600;">Accent Color</span>
                     </div>
+                    
+                    <label style="margin-top: 10px;">Global Heading Font</label>
+                    <select name="heading_font" style="width: 100%; padding: 8px 10px; margin-top: 5px; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 10px;">
+                        <option value="Arial">Arial</option>
+                        <option value="Montserrat">Montserrat</option>
+                        <option value="Roboto">Roboto</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Calibri">Calibri</option>
+                    </select>
+
+                    <label>Heading Font Size (Pt)</label>
+                    <input type="number" name="heading_size" value="40" style="width: 100%; padding: 8px 10px; margin-top: 5px; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 13px; color: var(--text-dark); font-weight: 600;">
+                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Default is 40. Make it 44+ for larger or 36- for smaller.</p>
                 </div>
 
                 <div class="gallery-scroll">
@@ -174,6 +189,13 @@
                     <button type="button" class="gallery-item" onclick="loadWorkspace(18)">Slide 18: Core Leadership</button>
                     <button type="button" class="gallery-item" onclick="loadWorkspace(19)">Slide 19: Thank You & Contact</button>
                     <button type="button" class="gallery-item" onclick="loadWorkspace(20)">Slide 20: 2nd Intro Slide</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(21)">Slide 21: About Us V2</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(22)">Slide 22: Clients & Partnerships</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(23)">Slide 23: Four Features Layout</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(24)">Slide 24: Three Columns Layout</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(25)">Slide 25: Four Columns Grid</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(26)">Slide 26: Two Columns Comparison</button>
+                    <button type="button" class="gallery-item" onclick="loadWorkspace(27)">Slide 27: List with description with 3 Images</button>
                 </div>
             </div>
 
@@ -203,6 +225,10 @@
 
                             <div id="form-block-2" class="slide-form-block">
                                 <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:16px;">
+                                        <label>Main Slide Title</label>
+                                        <input type="text" name="about_main_title" value="About Us" style="font-weight: 600;">
+                                    </div>
                                     <div class="two-column">
                                         <div class="form-group" style="margin-bottom:0;">
                                             <label>WHO WE ARE (Bullets)</label>
@@ -227,6 +253,12 @@
                             </div>
 
                             <div id="form-block-3" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>Main Slide Title</label>
+                                        <input type="text" name="problem_main_title" value="The Problem Statement" style="font-weight: 600;">
+                                    </div>
+                                </div>
                                 <div class="grid-2">
                                     <div class="inner-box">
                                         <label>Problem Area 1</label>
@@ -277,7 +309,8 @@
                                     <div class="inner-box"><input type="text" name="solh_1" value="Fast & Reliable" style="margin-bottom:10px; font-weight:700;"><textarea name="sold_1" rows="2">AI-powered data capture at survey speed with 99%+ uptime reliability</textarea></div>
                                     <div class="inner-box"><input type="text" name="solh_2" value="Cloud-Powered" style="margin-bottom:10px; font-weight:700;"><textarea name="sold_2" rows="2">All data stored securely on cloud — clients access anytime, anywhere</textarea></div>
                                     <div class="inner-box"><input type="text" name="solh_3" value="Scalable" style="margin-bottom:10px; font-weight:700;"><textarea name="sold_3" rows="2">From city roads to national highways — scales to any network size</textarea></div>
-                                    <div class="inner-box"><input type="text" name="solh_4" value="Efficient" style="margin-bottom:10px; font-weight:700;"><textarea name="sold_4" rows="2">End-to-end automated AI models reduce manual effort by 80%+</textarea></div>
+                                    <div class="inner-box"><input type="text" name="solh_4" value="Efficient" style="margin-bottom:10px; font-weight:700;">
+                                    <textarea name="sold_4" rows="2">End-to-end automated AI models reduce manual effort by 80%+</textarea></div>
                                 </div>
                                 <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(5, 'Our Solution')">➕ Add Slide to My Deck</button>
                             </div>
@@ -434,7 +467,8 @@
                                 <div class="grid-2">
                                     <div class="inner-box"><input type="text" name="work_h1" value="GIS Road Mapping" style="font-weight:600;"><input type="text" name="work_d1" value="GIS mapping of roads before survey" style="margin-top:8px;"></div>
                                     <div class="inner-box"><input type="text" name="work_h2" value="Data Capture Setup" style="font-weight:600;"><input type="text" name="work_d2" value="Multi-mode capture on vehicles" style="margin-top:8px;"></div>
-                                    <div class="inner-box"><input type="text" name="work_h3" value="AI Data Processing" style="font-weight:600;"><input type="text" name="work_d3" value="Automated AI models run on cloud" style="margin-top:8px;"></div>
+                                    <div class="inner-box"><input type="text" name="work_h3" value="AI Data Processing" style="font-weight:600;">
+                                    <input type="text" name="work_d3" value="Automated AI models run on cloud" style="margin-top:8px;"></div>
                                     <div class="inner-box"><input type="text" name="work_h4" value="Dashboard Delivery" style="font-weight:600;"><input type="text" name="work_d4" value="Final stats and heat maps ready for clients" style="margin-top:8px;"></div>
                                 </div>
                                 <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(13, 'Workflow Journey')">➕ Add Slide to My Deck</button>
@@ -577,7 +611,7 @@
                                 <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(19, 'Thank You & Contact')">➕ Add Slide to My Deck</button>
                             </div>
 
-                         <div id="form-block-20" class="slide-form-block">
+                            <div id="form-block-20" class="slide-form-block">
                                 <div class="inner-box">
                                     <div class="form-group">
                                         <label for="main_heading_intro2">Main Heading (Blue Text)</label>
@@ -592,108 +626,464 @@
                                 <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(20, '2nd Intro Slide')">➕ Add Slide to My Deck</button>
                             </div>
 
-                        </div> </div> </div> </div> <div class="deck-sidebar">
+                            <div id="form-block-21" class="slide-form-block">
+                                <div class="inner-box" style="margin-bottom: 24px;">
+                                    
+                                    <h4 style="font-size: 14px; margin-bottom: 16px; color: var(--primary);">Who We Are Section</h4>
+                                    <div class="form-group">
+                                        <label>Who We Are - Bullet Point 1</label>
+                                        <input type="text" name="who_we_are_p1" value="AI-driven technology company innovating infrastructure through continuous research to build smarter, more sustainable systems.">
+                                    </div>
+                                    <div class="form-group" style="margin-top: 12px;">
+                                        <label>Who We Are - Bullet Point 2</label>
+                                        <input type="text" name="who_we_are_p2" value="Use AI, GIS and Analytics to build present and future of infrastructure.">
+                                    </div>
+
+                                    <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 24px 0;">
+
+                                    <h4 style="font-size: 14px; margin-bottom: 16px; color: var(--primary);">Our Goals Section</h4>
+                                    <div class="form-group">
+                                        <label>Our Goal - Bullet Point 1</label>
+                                        <input type="text" name="our_goals_p1" value="Our current goal is to support all types of roads globally by providing advanced technology for road safety and maintenance.">
+                                    </div>
+                                    <div class="form-group" style="margin-top: 12px;">
+                                        <label>Our Goal - Bullet Point 2</label>
+                                        <input type="text" name="our_goals_p2" value="Empower smart city infrastructure through fully automated data pipelines.">
+                                    </div>
+
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(21, 'About Us (Slide 21)')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-22" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label for="clients_heading">Main Slide Title</label>
+                                        <input type="text" id="clients_heading" name="clients_heading" value="Clients and Partnerships">
+                                    </div>
+
+                                    <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 20px 0;">
+                                    <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--primary);">Manage Partner Logos (1 to 13)</h4>
+
+                                    <div class="form-group" style="background: var(--bg-light); padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                                        <label style="font-weight: bold;">Partner Logo 1 (BlackRock)</label>
+                                        <input type="file" name="client_logo_1" accept="image/*" style="margin-top: 5px;">
+                                        <label style="display: inline-block; margin-top: 8px; font-size: 12px; color: #cc0000;">
+                                            <input type="checkbox" name="remove_logo_1" value="yes"> ❌ Remove this logo from slide
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group" style="background: var(--bg-light); padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                                        <label style="font-weight: bold;">Partner Logo 2 (VINCI)</label>
+                                        <input type="file" name="client_logo_2" accept="image/*" style="margin-top: 5px;">
+                                        <label style="display: inline-block; margin-top: 8px; font-size: 12px; color: #cc0000;">
+                                            <input type="checkbox" name="remove_logo_2" value="yes"> ❌ Remove this logo from slide
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(22, 'Clients & Partnerships')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-23" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label for="s23_title">Main Slide Title</label>
+                                        <input type="text" id="s23_title" name="s23_title" value="Key Categories">
+                                    </div>
+
+                                    <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 20px 0;">
+
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                        <div style="background: var(--bg-light); padding: 10px; border-radius: 4px;">
+                                            <label style="font-weight: bold;">Item 1</label>
+                                            <input type="text" name="s23_desc_1" value="Rain Jacket" style="margin: 5px 0;">
+                                            <input type="file" name="s23_img_1" accept="image/*">
+                                        </div>
+                                        <div style="background: var(--bg-light); padding: 10px; border-radius: 4px;">
+                                            <label style="font-weight: bold;">Item 2</label>
+                                            <input type="text" name="s23_desc_2" value="Camping Tent" style="margin: 5px 0;">
+                                            <input type="file" name="s23_img_2" accept="image/*">
+                                        </div>
+                                        <div style="background: var(--bg-light); padding: 10px; border-radius: 4px;">
+                                            <label style="font-weight: bold;">Item 3</label>
+                                            <input type="text" name="s23_desc_3" value="Coffee Maker" style="margin: 5px 0;">
+                                            <input type="file" name="s23_img_3" accept="image/*">
+                                        </div>
+                                        <div style="background: var(--bg-light); padding: 10px; border-radius: 4px;">
+                                            <label style="font-weight: bold;">Item 4</label>
+                                            <input type="text" name="s23_desc_4" value="Paraffin Lamp" style="margin: 5px 0;">
+                                            <input type="file" name="s23_img_4" accept="image/*">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(23, 'Four Features Layout')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-24" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label for="s24_title">Main Slide Title</label>
+                                        <input type="text" id="s24_title" name="s24_title" value="Core Strategic Focus">
+                                    </div>
+
+                                    <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 20px 0;">
+
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                                        <div style="background: var(--bg-light); padding: 12px; border-radius: 6px; border: 1px solid var(--border-light);">
+                                            <label style="color: var(--primary); font-weight: bold; font-size: 12px;">Column 1</label>
+                                            <input type="text" name="s24_sub_1" value="Data Intelligence" style="margin: 6px 0; font-weight: 600;" placeholder="Subheading 1">
+                                            <input type="text" name="s24_c1_b1" value="Automated data parsing algorithms" style="margin-bottom: 6px; font-size: 13px;" placeholder="Bullet 1">
+                                            <input type="text" name="s24_c1_b2" value="Real-time validation pipelines" style="font-size: 13px;" placeholder="Bullet 2">
+                                        </div>
+
+                                        <div style="background: var(--bg-light); padding: 12px; border-radius: 6px; border: 1px solid var(--border-light);">
+                                            <label style="color: var(--primary); font-weight: bold; font-size: 12px;">Column 2</label>
+                                            <input type="text" name="s24_sub_2" value="Scalable Audits" style="margin: 6px 0; font-weight: 600;" placeholder="Subheading 2">
+                                            <input type="text" name="s24_c2_b1" value="Multi-lane evaluation architecture" style="margin-bottom: 6px; font-size: 13px;" placeholder="Bullet 1">
+                                            <input type="text" name="s24_c2_b2" value="High precision defect extraction" style="font-size: 13px;" placeholder="Bullet 2">
+                                        </div>
+
+                                        <div style="background: var(--bg-light); padding: 12px; border-radius: 6px; border: 1px solid var(--border-light);">
+                                            <label style="color: var(--primary); font-weight: bold; font-size: 12px;">Column 3</label>
+                                            <input type="text" name="s24_sub_3" value="Cloud Insights" style="margin: 6px 0; font-weight: 600;" placeholder="Subheading 3">
+                                            <input type="text" name="s24_c3_b1" value="Direct integration with GIS views" style="margin-bottom: 6px; font-size: 13px;" placeholder="Bullet 1">
+                                            <input type="text" name="s24_c3_b2" value="Comprehensive reporting formats" style="font-size: 13px;" placeholder="Bullet 2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(24, 'Three Columns Layout')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-25" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label for="s25_title">Main Slide Title</label>
+                                        <input type="text" id="s25_title" name="s25_title" value="" placeholder="Enter Main Slide Title...">
+                                    </div>
+
+                                    <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 20px 0;">
+
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                        
+                                        <div style="background: var(--bg-light); padding: 14px; border-radius: 6px; border: 1px solid var(--border-light);">
+                                            <label style="color: var(--primary); font-weight: bold; font-size: 12px;">Box 1 (Top Left)</label>
+                                            <input type="text" name="s25_sub_1" value="" style="margin: 6px 0; font-weight: 600;" placeholder="Enter Subheading 1...">
+                                            <textarea name="s25_c1_text" rows="3" style="font-size: 13px; margin-top:6px;" placeholder="Type here and press Enter for new bullet points..."></textarea>
+                                        </div>
+
+                                        <div style="background: var(--bg-light); padding: 14px; border-radius: 6px; border: 1px solid var(--border-light);">
+                                            <label style="color: var(--primary); font-weight: bold; font-size: 12px;">Box 2 (Top Right)</label>
+                                            <input type="text" name="s25_sub_2" value="" style="margin: 6px 0; font-weight: 600;" placeholder="Enter Subheading 2...">
+                                            <textarea name="s25_c2_text" rows="3" style="font-size: 13px; margin-top:6px;" placeholder="Type here and press Enter for new bullet points..."></textarea>
+                                        </div>
+
+                                        <div style="background: var(--bg-light); padding: 14px; border-radius: 6px; border: 1px solid var(--border-light);">
+                                            <label style="color: var(--primary); font-weight: bold; font-size: 12px;">Box 3 (Bottom Left)</label>
+                                            <input type="text" name="s25_sub_3" value="" style="margin: 6px 0; font-weight: 600;" placeholder="Enter Subheading 3...">
+                                            <textarea name="s25_c3_text" rows="3" style="font-size: 13px; margin-top:6px;" placeholder="Type here and press Enter for new bullet points..."></textarea>
+                                        </div>
+
+                                        <div style="background: var(--bg-light); padding: 14px; border-radius: 6px; border: 1px solid var(--border-light);">
+                                            <label style="color: var(--primary); font-weight: bold; font-size: 12px;">Box 4 (Bottom Right)</label>
+                                            <input type="text" name="s25_sub_4" value="" style="margin: 6px 0; font-weight: 600;" placeholder="Enter Subheading 4...">
+                                            <textarea name="s25_c4_text" rows="3" style="font-size: 13px; margin-top:6px;" placeholder="Type here and press Enter for new bullet points..."></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(25, 'Four Columns Grid')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-26" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label for="s26_title">Main Slide Title</label>
+                                        <input type="text" id="s26_title" name="s26_title" value="" placeholder="Enter Main Slide Title...">
+                                    </div>
+
+                                    <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 20px 0;">
+
+                                    <div class="two-column">
+                                        
+                                        <div style="background: var(--bg-light); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                                            <label style="color: var(--primary); font-weight: bold;">Column 1 (Left Block)</label>
+                                            <input type="text" name="s26_sub_1" value="" style="margin: 8px 0; font-weight: 600;" placeholder="Enter Left Subheading...">
+                                            <textarea name="s26_c1_text" rows="5" style="font-size: 14px; margin-top: 8px;" placeholder="Type left features here... Press Enter for new bullets."></textarea>
+                                        </div>
+
+                                        <div style="background: var(--bg-light); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+                                            <label style="color: var(--primary); font-weight: bold;">Column 2 (Right Block)</label>
+                                            <input type="text" name="s26_sub_2" value="" style="margin: 8px 0; font-weight: 600;" placeholder="Enter Right Subheading...">
+                                            <textarea name="s26_c2_text" rows="5" style="font-size: 14px; margin-top: 8px;" placeholder="Type right features here... Press Enter for new bullets."></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(26, 'Two Columns Comparison')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                            <div id="form-block-27" class="slide-form-block">
+                                <div class="inner-box">
+                                    <div class="form-group">
+                                        <label>Main Slide Title</label>
+                                        <input type="text" name="s27_title_val" value="" placeholder="Enter Main Title...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sub Heading</label>
+                                        <input type="text" name="s27_sub_val" value="" placeholder="Enter Sub Heading...">
+                                    </div>
+
+                                    <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 20px 0;">
+
+                                    <h4 style="font-size: 13px; margin-bottom: 12px; color: var(--primary);">List Items (01 to 04)</h4>
+                                    <div class="grid-2">
+                                        <div style="background: var(--bg-light); padding: 10px; border-radius: 4px;">
+                                            <label>Item 01 (Heading & Desc)</label>
+                                            <input type="text" name="s26_psh1_val" value="" placeholder="Heading 1..." style="margin-bottom: 6px;">
+                                            <textarea name="s26_ds1_val" rows="2" placeholder="Description 1..."></textarea>
+                                        </div>
+                                        <div style="background: var(--bg-light); padding: 10px; border-radius: 4px;">
+                                            <label>Item 02 (Heading & Desc)</label>
+                                            <input type="text" name="s26_psh2_val" value="" placeholder="Heading 2..." style="margin-bottom: 6px;">
+                                            <textarea name="s26_ds2_val" rows="2" placeholder="Description 2..."></textarea>
+                                        </div>
+                                        <div style="background: var(--bg-light); padding: 10px; border-radius: 4px;">
+                                            <label>Item 03 (Heading & Desc)</label>
+                                            <input type="text" name="s26_psh3_val" value="" placeholder="Heading 3..." style="margin-bottom: 6px;">
+                                            <textarea name="s26_ds3_val" rows="2" placeholder="Description 3..."></textarea>
+                                        </div>
+                                        <div style="background: var(--bg-light); padding: 10px; border-radius: 4px;">
+                                            <label>Item 04 (Heading & Desc)</label>
+                                            <input type="text" name="s26_psh4_val" value="" placeholder="Heading 4..." style="margin-bottom: 6px;">
+                                            <textarea name="s26_ds4_val" rows="2" placeholder="Description 4..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 20px 0;">
+
+                                    <h4 style="font-size: 13px; margin-bottom: 12px; color: var(--primary);">Replace Images (Optional)</h4>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                                        <div>
+                                            <label>Top Left Image</label>
+                                            <input type="file" name="s27_img_1" accept="image/*">
+                                        </div>
+                                        <div>
+                                            <label>Top Right Image</label>
+                                            <input type="file" name="s27_img_2" accept="image/*">
+                                        </div>
+                                        <div>
+                                            <label>Bottom Large Image</label>
+                                            <input type="file" name="s27_img_3" accept="image/*">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <button type="button" class="add-to-deck-btn" onclick="addSlideToDeck(27, 'List with 3 Images')">➕ Add Slide to My Deck</button>
+                            </div>
+
+                        </div> 
+                    </div> 
+                </div> 
+            </div> 
+
+            <div class="deck-sidebar">
                 <div class="deck-header">
                     <h3>My Live Presentation Deck</h3>
                 </div>
                 <div class="deck-list" id="active-deck-container"></div>
+                
                 <div class="deck-footer">
-                    <button type="submit" class="generate-btn">⚡ Build & Download PPT</button>
+                    <input type="hidden" name="export_format" id="export_format" value="pptx">
+                    
+<button type="button" class="generate-btn" style="background: #3b82f6; margin-bottom: 12px;" onclick="openFilenameModal('pptx')">
+    📊 Download as PPTX
+</button>
+
+<button type="button" class="generate-btn" style="background: #ef4444;" onclick="openFilenameModal('pdf')">
+    📄 Download as PDF
+</button>
+
+<input type="hidden" name="filename" id="final-filename-field" value="">
                 </div>
             </div>
 
         </form>
     </div>
 
-    <script>
-        let currentDeck = [];
-        let dragStartIndex = -1;
+<!-- popup to save file if user click on histpry button at the time of creating an ppt  -->
+    <div id="save-warning-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 30px; border-radius: 12px; width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+        <h3 style="margin-bottom: 15px; color: #0f172a;">Wait! Unsaved Changes</h3>
+        <p style="margin-bottom: 25px; color: #64748b; font-size: 14px;">You have an active deck in progress. Do you want to save it (Download) before going to History?</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="saveAndLeave()" style="padding: 10px 20px; background: #4f46e5; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Save & Leave</button>
+            <button onclick="leaveWithoutSaving()" style="padding: 10px 20px; background: #fee2e2; color: #ef4444; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Discard</button>
+        </div>
+    </div>
+</div>
 
-        function loadWorkspace(slideId) {
-            document.querySelectorAll('.slide-form-block').forEach(b => b.classList.remove('active'));
-            const selectedBlock = document.getElementById(`form-block-${slideId}`);
-            if (selectedBlock) selectedBlock.classList.add('active');
+<!-- pop up for naming the file when user clicks on download button (before the actual download happens) -->
+<div id="filename-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div style="background: white; padding: 25px; border-radius: 12px; width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+        <h3 style="margin-bottom: 15px; color: #0f172a;">Name Your Presentation</h3>
+        <input type="text" id="modal-filename-input" value="RoadAthena_Deck" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #cbd5e1; border-radius: 6px;">
+        
+        <div style="display: flex; gap: 10px;">
+            <button type="button" onclick="closeFilenameModal()" style="flex: 1; padding: 10px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer;">Cancel</button>
             
-            document.getElementById('current-slide-title').innerText = `Editing Slide ${slideId} Configuration`;
-            
-            // Note: If you don't have an image for slide 20 yet, this might show a broken image icon. 
-            // That's normal until you add a preview image for slide 20 in your static folder.
-            document.getElementById('layout-preview-img').src = `/static/preview/slide${slideId}.png`;
+            <button type="button" id="modal-action-btn" onclick="proceedDownload()" style="flex: 1; padding: 10px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Save & Download</button>
+        </div>
+    </div>
+</div>
+    </body>
+{% if payload %}
+    {{ payload|json_script:"my-payload-data" }}
+{% endif %}
+<script>
+    let currentDeck = []; 
+    let selectedExportFormat = 'pptx';
+    let isSaveOnlyAction = false;
+    window.isNavigatingToHistory = false;
+
+    // 1. AUTO-FILL LOGIC
+    const payloadElement = document.getElementById('my-payload-data');
+    if (payloadElement) {
+        const savedData = JSON.parse(payloadElement.textContent);
+        for (let key in savedData) {
+            let field = document.querySelector(`[name="${key}"]`);
+            if (field) field.value = savedData[key];
         }
+        if (savedData.slide_order_json) {
+            currentDeck = JSON.parse(savedData.slide_order_json);
+            renderDeck(); 
+        }
+    }
 
-        function addSlideToDeck(slideId, title) {
-            let cleanTitle = title.replace(/Slide \d+:\s*/g, '');
-            const uniqueId = 'slide_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
-            currentDeck.push({ uniqueId: uniqueId, slideId: slideId, title: cleanTitle });
+    // 2. SLIDE MANAGEMENT & DRAG DROP
+    function addSlideToDeck(slideId, title) {
+        currentDeck.push({ uniqueId: Date.now().toString(), slideId: slideId, title: title });
+        renderDeck();
+    }
+
+    function deleteFromDeck(uniqueId) {
+        currentDeck = currentDeck.filter(item => item.uniqueId !== uniqueId);
+        renderDeck();
+    }
+
+    function loadWorkspace(slideId) {
+        document.querySelectorAll('.slide-form-block').forEach(block => block.classList.remove('active'));
+        const target = document.getElementById(`form-block-${slideId}`);
+        if (target) target.classList.add('active');
+        
+        const previewImg = document.getElementById('layout-preview-img');
+        if (previewImg) previewImg.src = `/static/preview/slide${slideId}.png`;
+
+        const titleEl = document.getElementById('current-slide-title');
+        if (titleEl) titleEl.textContent = `Slide ${slideId}`;
+        
+        const workspaceBody = document.querySelector('.workspace-body');
+        if (workspaceBody) workspaceBody.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    let dragStartIndex;
+    function handleDragStart(e) { dragStartIndex = +this.dataset.index; e.dataTransfer.effectAllowed = 'move'; this.classList.add('dragging'); }
+    function handleDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; return false; }
+    function handleDragEnter(e) { this.classList.add('over'); }
+    function handleDragLeave(e) { this.classList.remove('over'); }
+    function handleDrop(e) {
+        e.stopPropagation();
+        const dragEndIndex = +this.dataset.index;
+        if (dragStartIndex !== dragEndIndex) {
+            const itemToMove = currentDeck.splice(dragStartIndex, 1)[0];
+            currentDeck.splice(dragEndIndex, 0, itemToMove);
             renderDeck();
         }
+        return false;
+    }
+    function handleDragEnd(e) { this.classList.remove('dragging'); document.querySelectorAll('.deck-item').forEach(item => item.classList.remove('over')); }
 
-        function deleteFromDeck(uniqueId) {
-            currentDeck = currentDeck.filter(item => item.uniqueId !== uniqueId);
-            renderDeck();
-        }
+    function renderDeck() {
+        const container = document.getElementById('active-deck-container');
+        container.innerHTML = '';
+        currentDeck.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'deck-item';
+            div.draggable = true;
+            div.dataset.index = index;
+            
+            div.onclick = function(e) {
+                if (e.target.classList.contains('delete')) return;
+                loadWorkspace(item.slideId);
+            };
 
-        function handleDragStart(e) {
-            dragStartIndex = +this.dataset.index;
-            e.dataTransfer.effectAllowed = 'move';
-            this.classList.add('dragging');
-        }
+            div.innerHTML = `
+                <div class="deck-item-info"><span class="drag-handle"></span>${index + 1}. ${item.title}</div>
+                <button type="button" class="control-btn delete" onclick="deleteFromDeck('${item.uniqueId}')">✕</button>
+            `;
 
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            return false;
-        }
+            div.addEventListener('dragstart', handleDragStart); div.addEventListener('dragover', handleDragOver);
+            div.addEventListener('dragenter', handleDragEnter); div.addEventListener('dragleave', handleDragLeave);
+            div.addEventListener('drop', handleDrop); div.addEventListener('dragend', handleDragEnd);
+            container.appendChild(div);
+        });
+        document.getElementById('slide_order_json').value = JSON.stringify(currentDeck);
+    }
 
-        function handleDragEnter(e) { this.classList.add('over'); }
-        function handleDragLeave(e) { this.classList.remove('over'); }
-
-        function handleDrop(e) {
-            e.stopPropagation();
-            const dragEndIndex = +this.dataset.index;
-            if (dragStartIndex !== dragEndIndex) {
-                const itemToMove = currentDeck.splice(dragStartIndex, 1)[0];
-                currentDeck.splice(dragEndIndex, 0, itemToMove);
-                renderDeck();
+    // 3. HISTORY WARNING & MODALS LOGIC
+    const historyBtn = document.querySelector('a[href*="history"]');
+    if (historyBtn) {
+        historyBtn.addEventListener('click', function(e) {
+            if (currentDeck && currentDeck.length > 0) {
+                e.preventDefault(); 
+                document.getElementById('save-warning-modal').style.display = 'flex';
             }
-            return false;
-        }
+        });
+    }
 
-        function handleDragEnd(e) {
-            this.classList.remove('dragging');
-            document.querySelectorAll('.deck-item').forEach(item => item.classList.remove('over'));
-        }
+function saveAndLeave() {
+    document.getElementById('save-warning-modal').style.display = 'none';
+    // Yahan hum saveOnly ko 'true' bhej rahe hain
+    openFilenameModal('pptx', true); 
+}
 
-        function renderDeck() {
-            const container = document.getElementById('active-deck-container');
-            container.innerHTML = '';
-            
-            currentDeck.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'deck-item';
-                div.draggable = true;
-                div.dataset.index = index;
-                
-                div.innerHTML = `
-                    <div class="deck-item-info">
-                        <span class="drag-handle" title="Drag to reorder"></span>
-                        ${index + 1}. ${item.title}
-                    </div>
-                    <button type="button" class="control-btn delete" onclick="deleteFromDeck('${item.uniqueId}')">✕</button>
-                `;
+    function leaveWithoutSaving() {
+        window.location.href = "{% url 'history' %}";
+    }
 
-                div.addEventListener('dragstart', handleDragStart);
-                div.addEventListener('dragover', handleDragOver);
-                div.addEventListener('dragenter', handleDragEnter);
-                div.addEventListener('dragleave', handleDragLeave);
-                div.addEventListener('drop', handleDrop);
-                div.addEventListener('dragend', handleDragEnd);
+function openFilenameModal(format, isSaveOnly = false) {
+    selectedExportFormat = format;
+    isSaveOnlyAction = isSaveOnly;
+    
+    document.getElementById('filename-modal').style.display = 'flex';
+    
+    // Modal button ka text dynamically change karo
+    const actionBtn = document.getElementById('modal-action-btn');
+    if (isSaveOnly) {
+        actionBtn.textContent = "Save to History";
+        actionBtn.style.background = "#10b981"; // Green color
+    } else {
+        actionBtn.textContent = "Save & Download";
+        actionBtn.style.background = "#3b82f6"; // Blue color
+    }
+}
 
-                container.appendChild(div);
-            });
+function closeFilenameModal() {
+    document.getElementById('filename-modal').style.display = 'none';
+}
 
-            document.getElementById('slide_order_json').value = JSON.stringify(currentDeck);
-        }
-    </script>
-</body>
+function proceedDownload() {
+    const filename = document.getElementById('modal-filename-input').value;
+    document.getElementById('final-filename-field').value = filename;
+    document.getElementById('export_format').value = selectedExportFormat;
+    
+    // Hidden field update karo backend ko batane ke liye
+    document.getElementById('save-only-field').value = isSaveOnlyAction ? "true" : "false";
+    
+    // Form submit karo
+    document.getElementById('master-ppt-form').submit();
+    
+    document.getElementById('filename-modal').style.display = 'none';
+    }
+</script>
+
 </html>
